@@ -1,8 +1,8 @@
 import './App.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import AuthenticationForm from './pages/AuthenticationFrom';
-import CreateAccountForm from './pages/CreateAccountForm';
-import {Link, Routes, Route} from "react-router-dom";
+// import AuthenticationForm from './pages/AuthenticationFrom';
+// import CreateAccountForm from './pages/CreateAccountForm';
+import {Link, Routes, Route, Navigate} from "react-router-dom";
 import DoctorView from './pages/DoctorView';
 import PatientView from './pages/PatientView';
 import { useState } from 'react';
@@ -11,7 +11,8 @@ function App() {
   return (
     <div className="App"> 
       <Routes>
-        <Route path = "/" element = {<DoctorView/>}/>
+        <Route path="/" element={<Navigate to="/d" />} />
+        <Route path = "/d/*" element = {<DoctorView/>}/>
         <Route path = "/p" element = {<PatientView/>}/>
       </Routes>
       </div>
