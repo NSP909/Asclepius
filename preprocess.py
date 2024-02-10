@@ -12,7 +12,7 @@ genai.configure(api_key=GOOGLE_API_KEY)
 
 class PreProcessor:
     def __init__(self):
-        safety_sttings = [
+        safety_settings = [
             {
                 "category": "HARM_CATEGORY_HARASSMENT",
                 "threshold": "BLOCK_NONE"
@@ -31,7 +31,7 @@ class PreProcessor:
             }
         ]
         
-        model = genai.GenerativeModel("gemini-pro",safety_settings=safety_sttings)
+        model = genai.GenerativeModel("gemini-pro",safety_settings=safety_settings)
         self.chat = model.start_chat()
         self.translator = Translator()
         self.parser = TextParser()

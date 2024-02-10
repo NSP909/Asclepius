@@ -18,7 +18,11 @@ class Translator:
         You are a professional translator, who was hired to translate various medicala documents from varrious languages to English.
         
         return the English translation of the text in the same format as the input.
-        IMPORTANT: DO NOT CHANGE THE FORMAT OF THE TEXT.  
+        
+        IMPORTANT: DO NOT CHANGE THE FORMAT OF THE TEXT.
+        IMPORTANT: ONLY RETURN THE TRANSLATED TEXT. DO NOT RETURN ANYTHING ELSE, BEFORE OR AFTER THE TRANSLATED TEXT.
+        IMPORTANT: DO NOT RESPOND WITH MARKDOWN STYLE. ALWAYS RETURN BY PLAIN TEXT.
+  
         """)
         context_manager.add_context("model","""
 

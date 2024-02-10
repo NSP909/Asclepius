@@ -7,7 +7,7 @@ load_dotenv()
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 genai.configure(api_key=GOOGLE_API_KEY)
 
-safety_sttings = [
+safety_settings = [
             {
                 "category": "HARM_CATEGORY_HARASSMENT",
                 "threshold": "BLOCK_NONE"
@@ -26,7 +26,7 @@ safety_sttings = [
             }
         ]
         
-model = genai.GenerativeModel("gemini-pro",safety_settings=safety_sttings)
+model = genai.GenerativeModel("gemini-pro",safety_settings=safety_settings)
 
 cols = {
         "notes": ["note", "note_date"],
@@ -49,22 +49,39 @@ You are a natural language processor, that converts natural language to a struct
 below are the didctionary where key is the name of the table in teh database, and the value is the list of columns in the table.
 {str(cols)}
 
-IMPORTANT: ONLY RETURN THE QUERY STRING. DO NOT RETURN ANYTHING ELSE.
+return format:
+["~SQL query here~"]
 
+IMPORTANT: FOLLOW THE PROVIDED FORMAT EXACTLY.
+IMPORTANT: ONLY RETURN THE QUERY STRING. DO NOT RETURN ANYTHING ELSE.
+IMPORTANT: DO NOT INCLUDE BACK QUOTES OR STRING UNRELATED TO THE QUERY.
 """)
 
-context_manager.add_context("model","Certainly, I can help you with that.")
+context_manager.add_context("model","Certainly, I can help with creating the SQL quey. and I will NOT add any texxts unreltaed to the query")
+
+def sanitize(text):
+    if text.startswith("```sql"):
+        text = text[6:]
+    if text.endswith("```"):
+        text = text[:-3]
+    
+    while text.startswith("\n"):
+        text = text[1:]
+    
+    while text.endswith("\n"):
+        text = text[:-1]
+    
+    return text
 
 def parse_query(input_text):
     chat = model.start_chat(history=context_manager.get_context())
     response = chat.send_message(input_text)
-    return response.text
+    response = sanitize(response.text)
+    return response
 
 def main():
     response = parse_query("I want all the medicine prescription")
     print(response)
     
 if __name__ == "__main__":
-    # TODO: actually testing this function
-    # TODO: fix the text parser priniting extra lines in the beginning (sanitize)
     main()
