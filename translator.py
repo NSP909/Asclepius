@@ -10,7 +10,7 @@ genai.configure(api_key=GOOGLE_API_KEY)
 class Translator:
     def __init__(self):
         context_manager = GeminiContextManager()
-        # creating system prompt
+        # configure system prompt
 
         context_manager.add_context("user",
         """
