@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import axios from 'axios';
-import {Upload } from 'lucide-react';
+// import {Upload } from 'lucide-react';
 import {Link, Routes, Route} from "react-router-dom"
 
 function SendAV() {
@@ -59,16 +59,16 @@ function SendAV() {
       }
     }
   
-    function isSubmitted() {
-      return (
-        <div>
-          <label htmlFor="submit"
-            className="rounded-[25px] w-[70px] text-sm h-[20px] md:h-[60px] md:text-xl bg-textColor text-[#041C44] font-semibold hover:bg-[#949494] flex items-center justify-center cursor-pointer"
-          ><Upload size={32} strokeWidth={2} /></label>
-          <input type="submit" id="submit" name="submit" className='w-0' onClick={handleSubmit} />
-        </div>
-      )
-    }
+    // function isSubmitted() {
+    //   return (
+    //     <div>
+    //       <label htmlFor="submit"
+    //         className="rounded-[25px] w-[70px] text-sm h-[20px] md:h-[60px] md:text-xl bg-textColor text-[#041C44] font-semibold hover:bg-[#949494] flex items-center justify-center cursor-pointer"
+    //       ><Upload size={32} strokeWidth={2} /></label>
+    //       <input type="submit" id="submit" name="submit" className='w-0' onClick={handleSubmit} />
+    //     </div>
+    //   )
+    // }
   
     return (
       <div className="flex flex-col gap-10">
@@ -80,7 +80,7 @@ function SendAV() {
           >Select image file</label>
           <input type="file" id="image" name="image" accept="image/*" className='w-0' onChange={handleUpload} required />
   
-          {isSubmitted()}
+
           <div className="flex flex-col justify-center items-center">
           {isUploaded && <image ref={imageRef} controls>
             <source key={image.imageFile.name} src={image.imageURL} type="image/mp4" className="w-[80%] h-auto" />
