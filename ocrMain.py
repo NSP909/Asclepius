@@ -25,7 +25,7 @@ credentials = service_account.Credentials.from_service_account_info(
 
 
 credentials.refresh(Request())
-access_token = credentials.token
+ACCESS_TOKEN = credentials.token
 
 def get_response(image_path, access_token):
     with open(image_path, "rb") as image_file:
@@ -56,7 +56,7 @@ def get_response(image_path, access_token):
     #print(response)
     return response
 
-def get_text(response,line_height=40):
+def parse_text(response,line_height=40):
     if response.status_code == 200:
         
         result = response.json()
@@ -84,10 +84,13 @@ def get_text(response,line_height=40):
     else:
         print(f"Error: {response.status_code}, {response.text}")
 
-def main():
-    image_path = "ocr\input\images3.jpg"
+def get_text(image_path, access_token=ACCESS_TOKEN):
     response = get_response(image_path, access_token)
-    print(get_text(response))
+    return parse_text(response)
+
+def main():
+    image_path = "ocr\input\images2.png"
+    print(get_text(image_path, ACCESS_TOKEN))
 
 if __name__ == "__main__":
     main()
