@@ -27,15 +27,12 @@ credentials = service_account.Credentials.from_service_account_info(
 credentials.refresh(Request())
 ACCESS_TOKEN = credentials.token
 
-def get_response(image_path, access_token):
-    with open(image_path, "rb") as image_file:
-        image_content = base64.b64encode(image_file.read()).decode("utf-8")
-
+def get_response(imgbase64, access_token):
 
     annotate_image_request = {
         "requests": [
             {
-                "image": {"content": image_content},
+                "image": {"content": imgbase64},
                 "features": [
                     {"type": "TEXT_DETECTION"},
                 ],
@@ -84,8 +81,8 @@ def parse_text(response,line_height=40):
     else:
         print(f"Error: {response.status_code}, {response.text}")
 
-def get_text(image_path, access_token=ACCESS_TOKEN):
-    response = get_response(image_path, access_token)
+def get_text(imgbase64, access_token=ACCESS_TOKEN):
+    response = get_response(imgbase64, access_token)
     return parse_text(response)
 
 def main():
