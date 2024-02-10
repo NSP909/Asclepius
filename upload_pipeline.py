@@ -3,8 +3,9 @@ from ocrMain import get_text
 import json
 import time
 
-def upload_pipeline(image_path):
-    text = get_text(image_path)
+def upload_pipeline(imagebase64):
+
+    text = get_text(imagebase64)
     preprocessor = PreProcessor()
     response = preprocessor.preprocess(text)
     return json.dumps(response)

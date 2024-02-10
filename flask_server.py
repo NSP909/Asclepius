@@ -18,6 +18,10 @@ from dotenv import load_dotenv
 load_dotenv()
 connection_string = os.getenv("CONNECTION_STRING")
 
+from upload_pipeline import upload_pipeline
+
+from parse_query import parse_query
+
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = connection_string
@@ -176,27 +180,90 @@ def get_patients():
 @app.route("/transcribe", methods=["GET"])
 @login_required
 def transcribe():
-    pass
+    return jsonify({"data": upload_pipeline(request.json.get("imagebase64"))})
 
 @app.route("/save", methods=["POST"])
 @login_required
 def save():
-    pass
+    data = request.json.data
+    user_id = request.json.data.get("user_id")
+    history_user_id = request.json.data.get("history_user_id")
+
+    if data['notes']:
+        for note in data['notes']:
+            new_note = Notes(user_id=user_id, history_user_id=history_user_id, note=note['note'], note_date=datetime.strptime(note['note_date'], '%Y-%m-%d'))
+            db.session.add(new_note)
+
+    if data['medicine']:
+        for medicine in data['medicine']:
+            new_medicine = Medicine(user_id=user_id, history_user_id=history_user_id, med_name=medicine['med_name'], med_dosage=medicine['med_dosage'], med_frequency=medicine['med_frequency'], med_date=datetime.strptime(medicine['med_date'], '%Y-%m-%d'))
+            db.session.add(new_medicine)
+
+    if data['vaccine']:
+        for vaccine in data['vaccine']:
+            new_vaccine = Vaccine(user_id=user_id, history_user_id=history_user_id, vac_name=vaccine['vac_name'], vac_date=datetime.strptime(vaccine['vac_date'], '%Y-%m-%d'))
+            db.session.add(new_vaccine)
+
+    if data['lab_result']:
+        for lab_result in data['lab_result']:
+            new_lab_result = LabResult(user_id=user_id, history_user_id=history_user_id, lab_result=lab_result['lab_result'], lab_date=datetime.strptime(lab_result['lab_date'], '%Y-%m-%d'))
+            db.session.add(new_lab_result)
+
+    if data['surgeries']:
+        for surgery in data['surgeries']:
+            new_surgery = Surgeries(user_id=user_id, history_user_id=history_user_id, surgery=surgery['surgery'], surgery_date=datetime.strptime(surgery['surgery_date'], '%Y-%m-%d'))
+            db.session.add(new_surgery)
+
+    if data['diagnosis']:
+        for diagnosis in data['diagnosis']:
+            new_diagnosis = Diagnosis(user_id=user_id, history_user_id=history_user_id, diagnosis=diagnosis['diagnosis'], diag_date=datetime.strptime(diagnosis['diag_date'], '%Y-%m-%d'))
+            db.session.add(new_diagnosis)
+
+    if data['symptoms']:
+        for symptom in data['symptoms']:
+            new_symptom = Symptoms(user_id=user_id, history_user_id=history_user_id, symptom=symptom['symptom'], symptom_date=datetime.strptime(symptom['symptom_date'], '%Y-%m-%d'))
+            db.session.add(new_symptom)
+
+    db.session.commit()
+
+    return {"message": "Data saved successfully"}, 200
 
 @app.route("/getentirehistory", methods=["GET"])
 @login_required
 def get_entire_history():
-    pass
+    user_id = request.json.get("user_id")
+    notes = Notes.query.filter_by(user_id=user_id).all()
+    medicine = Medicine.query.filter_by(user_id=user_id).all()
+    Vitals = Vitals.query.filter_by(user_id=user_id).all()
+    vaccine = Vaccine.query.filter_by(user_id=user_id).all()
+    lab_result = LabResult.query.filter_by(user_id=user_id).all()
+    surgeries = Surgeries.query.filter_by(user_id=user_id).all()
+    emergencies = Emergencies.query.filter_by(user_id=user_id).all()
+    diagnosis = Diagnosis.query.filter_by(user_id=user_id).all()
+    symptoms = Symptoms.query.filter_by(user_id=user_id).all()
+
+    return jsonify({
+        "notes": [{"note": note.note, "note_date": note.note_date} for note in notes],
+        "medicine": [{"med_name": med.med_name, "med_dosage": med.med_dosage, "med_frequency": med.med_frequency, "med_date": med.med_date} for med in medicine],
+        "vitals": [{"vital_name": vital.vital_name, "vital_value": vital.vital_value, "vital_date": vital.vital_date} for vital in Vitals],
+        "vaccine": [{"vac_name": vac.vac_name, "vac_date": vac.vac_date} for vac in vaccine],
+        "lab_result": [{"lab_result": lab.lab_result, "lab_date": lab.lab_date} for lab in lab_result],
+        "surgeries": [{"surgery": surgery.surgery, "surgery_date": surgery.surgery_date} for surgery in surgeries],
+        "emergencies": [{"emergency_name": emergency.emergency_name, "emergency_date": emergency.emergency_date} for emergency in emergencies],
+        "diagnosis": [{"diagnosis": diag.diagnosis, "diagnosis_date": diag.diag_date} for diag in diagnosis],
+        "symptoms": [{"symptom": symptom.symptom, "symptom_date": symptom.symptom_date} for symptom in symptoms]
+    })
 
 @app.route("/convertNLPtoSQL", methods=["POST"])
 @login_required
 def convert_nlp_to_sql():
-    pass
+    return jsonify({"query": parse_query(request.json.get("text"))})
 
 @app.route("/performquery", methods=["POST"])
 @login_required
 def perform_query():
-    pass
+    query = request.json.get("query")
+    return jsonify({"result": db.engine.execute(query).fetchall()})
 
 @app.route("/summarize", methods=["GET"])
 @login_required
