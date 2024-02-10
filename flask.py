@@ -112,3 +112,86 @@ class Symptoms(db.Model):
     symptom = db.Column(db.String(255), nullable=False)
     symptom_date = db.Column(db.Date, nullable=False)
     history_user_id = db.Column(db.Integer, nullable=False)
+
+@loginManager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+@app.route("/login", methods=["POST"])
+def login():
+    username = request.json.get("username")
+    password = request.json.get("password")
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        return jsonify({"message": "Invalid username or password"}), 400
+    user_pwd = UserPwd.query.filter_by(user_id=user.user_id).first()
+    if user_pwd is None or user_pwd.pwd != password:
+        return jsonify({"message": "Invalid username or password"}), 400
+    login_user(user)
+    return jsonify({"message": "Logged in successfully", "user_id": user.user_id, "user_type": user.user_type})
+
+@app.route("/getpatients", methods=["GET"])
+@login_required
+def get_patients():
+    patients = User.query.filter_by(user_type=1).all()
+
+    for patient in patients:
+        patient_info = UserInfo.query.filter_by(user_id=patient.user_id).first()
+        patient.fullname = patient_info.fullname
+        patient.date_of_birth = patient_info.date_of_birth
+        patient.user_height = patient_info.user_height
+        patient.user_weight = patient_info.user_weight
+        patient.race = patient_info.race
+        patient.ethnicity = patient_info.ethnicity
+        patient.sex = patient_info.sex
+        patient.gender = patient_info.gender
+
+    return jsonify([{
+        "user_id": patient.user_id, 
+        "username": patient.username,
+        "fullname": patient.fullname,
+        "date_of_birth": patient.date_of_birth,
+        "user_height": patient.user_height,
+        "user_weight": patient.user_weight,
+        "race": patient.race,
+        "ethnicity": patient.ethnicity,
+        "sex": patient.sex,
+        "gender": patient.gender
+    } for patient in patients])
+
+@app.route("/transcribe", methods=["GET"])
+@login_required
+def transcribe():
+    pass
+
+@app.route("/save", methods=["POST"])
+@login_required
+def save():
+    pass
+
+@app.route("/getentirehistory", methods=["GET"])
+@login_required
+def get_entire_history():
+    pass
+
+@app.route("/convertNLPtoSQL", methods=["POST"])
+@login_required
+def convert_nlp_to_sql():
+    pass
+
+@app.route("/performquery", methods=["POST"])
+@login_required
+def perform_query():
+    pass
+
+@app.route("/summarize", methods=["GET"])
+@login_required
+def summarize():
+    pass
+
+@app.route("/getprobable", methods=["GET"])
+@login_required
+def get_probable():
+    pass
+
+app.run(debug=True)
