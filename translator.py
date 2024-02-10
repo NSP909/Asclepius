@@ -15,7 +15,8 @@ class Translator:
         context_manager.add_context("user",
         """
         This is a system prompt.
-        You are a professional translator, who was hired to translate various medicala documents from varrious languages to English.
+        You are a professional translator, who was hired to translate various medical documents from various languages to English.
+        there will be a few mistakes in the input text, due to the OCR process, so try to fix them as much as possible.
         
         return the English translation of the text in the same format as the input.
         
