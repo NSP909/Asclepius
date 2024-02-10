@@ -4,6 +4,7 @@ import os
 from gemini_context_manager import GeminiContextManager
 from translator import Translator
 from text_parser import TextParser
+import time
 
 load_dotenv()
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
@@ -39,3 +40,53 @@ class PreProcessor:
         response = self.translator.translate(text, self.chat)
         response = self.parser.parse(response, self.chat)
         return response
+
+def main():
+    preprocessor = PreProcessor()
+    response = preprocessor.preprocess("""
+                                       
+患者番号: #123456
+名前: ジョン・ドウ
+生年月日: 1990-05-15
+性別: 男性
+身長: 180 cm
+体重: 75 kg
+人種: 白人
+民族: 指定なし
+
+処方箋:
+- 薬: パロキセチン
+- 用量: 20 mg
+- 頻度: 1回/日
+- 開始日: 2022-01-01
+
+ワクチン:
+- 名前: コロナワクチン
+- 開始日: 2022-01-01
+
+検査結果:
+- 結果: 陰性
+- 日付: 2022-01-01
+
+手術履歴:
+- 手術: なし
+- 日付: なし
+
+注意事項:
+- 注意事項: 食事の後に服用してください
+- 日付: 2022-01-01
+
+医師の署名:
+- 署名: Dr. Smith                                       
+                                       """)
+    
+    
+    
+    print(response)
+    
+    
+if __name__ == "__main__":
+    t1 = time.time()
+    main()
+    t2 = time.time()
+    print(f"Time taken: {t2-t1} seconds")
