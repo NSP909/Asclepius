@@ -4,12 +4,15 @@ import base64
 from google.auth.transport.requests import Request
 from google.oauth2 import service_account
 from reportlab.pdfgen import canvas
+from dotenv import load_dotenv
+import os
 
 
 VISION_GDCH_ENDPOINT = "vision.googleapis.com"
 
+load_dotenv()
 
-keyfile_path = "C:\\Users\\sange\\Downloads\\favorable-mix-413908-a57969b30ec9.json"
+keyfile_path = os.getenv("VERTEX_VISION_PATH")
 
 
 with open(keyfile_path, "r") as keyfile:
@@ -27,7 +30,7 @@ credentials.refresh(Request())
 access_token = credentials.token
 
 
-image_path = "Asclepius\ocr\input\images2.png"
+image_path = "ocr\input\images2.png"
 
 with open(image_path, "rb") as image_file:
     image_content = base64.b64encode(image_file.read()).decode("utf-8")
@@ -67,7 +70,7 @@ if response.status_code == 200:
     sorted_words = sorted(text_annotations[1:], key=lambda x: (x['boundingPoly']['vertices'][0]['y'], x['boundingPoly']['vertices'][0]['x']))
 
 
-    pdf_output_path = "Asclepius\ocr\output\detected_text.pdf"
+    pdf_output_path = "ocr\output\detected_text.pdf"
     c = canvas.Canvas(pdf_output_path)
     c.setFont("Helvetica", 12)
 
