@@ -19,14 +19,14 @@ class TextParser:
         YOU MUST FOLLOW THE RESPONSE FORMAT EXACTLY.
         
         response format:
-        {{ "notes": {{ "note": "~doctor's note here~", "note_date": "~date in the format of YYYY-MM-DD if month or date is a single digit number, pad it with 0~"}},
+        { "notes": {{ "note": "~doctor's note here~", "note_date": "~date in the format of YYYY-MM-DD if month or date is a single digit number, pad it with 0~"}},
             "medicine": [{{ "med_name": "~medicine name here~", "med_dosage": "~medicine dosage here~", "med_frequency": "~medicine frequency here~", "med_date": "~medicine start date here~"}}, ...],
             "vaccine": [{{ "vac_name": "~vaccine name here~", "vaccine_date": "~vaccine start date here~"}}, ...],
             "lab_result": {{ "lab_result": "~lab result here~", lab_date": "~lab date here~"}},
             "surgeries": {{ "surgery": "~surgery description here~", "surgery_date": "~surgery date here~"}},
             "diagnosis": {{ "diagnosis": "~diagnosis here~", "diagnosis_date": "~diagnosis date here~"}},
             "symptoms": [{{ "symptom": "~symptom here~", "symptom_date": "~symptom date here~"}}, ...],
-        }}
+        }
         
         IMPORTANT: OBEY THE PROVIDED FORMAT.
         IMPORTANT: DO NOT INCLUDE ANY OTHER INFORMATION THAT IS NOT IN THE PROVIDED FORMAT.

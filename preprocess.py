@@ -1,10 +1,10 @@
 import google.generativeai as genai
 from dotenv import load_dotenv
 import os
-from gemini_context_manager import GeminiContextManager
 from translator import Translator
 from text_parser import TextParser
 import time
+import ast
 
 load_dotenv()
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
@@ -36,9 +36,15 @@ class PreProcessor:
         self.translator = Translator()
         self.parser = TextParser()
     
+    def to_dict(self, text):
+        return ast.literal_eval(text)
+    
     def preprocess(self, text):
         response = self.translator.translate(text, self.chat)
         response = self.parser.parse(response, self.chat)
+        response = self.to_dict(response)
+        
+        # dictionary
         return response
 
 def main():
@@ -83,6 +89,7 @@ def main():
     
     
     print(response)
+    print(type(response))
     
     
 if __name__ == "__main__":
