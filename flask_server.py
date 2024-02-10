@@ -1,6 +1,6 @@
-from flask_server import Flask, redirect
-from flask_server import request
-from flask_server import jsonify
+from flask import Flask, redirect
+from flask import request
+from flask import jsonify
 import psycopg2
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import (
