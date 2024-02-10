@@ -57,6 +57,16 @@ CREATE TABLE medicine (
     FOREIGN KEY (user_id) REFERENCES usertable (user_id)
 );
 
+CREATE TABLE vitals (
+    vital_id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    user_id integer NOT NULL,
+    vital_name VARCHAR (32) NOT NULL,
+    vital_value VARCHAR (32) NOT NULL,
+    vital_date DATE NOT NULL,
+    history_user_id integer NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES usertable (user_id)
+);
+
 CREATE TABLE vaccine (
     vac_id serial GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     user_id integer NOT NULL,

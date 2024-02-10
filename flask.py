@@ -13,9 +13,14 @@ from flask_login import (
 )
 from datetime import datetime
 
+import os
+from dotenv import load_dotenv
+load_dotenv()
+connection_string = os.getenv("CONNECTION_STRING")
+
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql+psycopg2://postgres:hacklytics@35.232.153.130:5432/postgres"
+app.config["SQLALCHEMY_DATABASE_URI"] = connection_string
 db = SQLAlchemy(app)
 
 loginManager = LoginManager()
@@ -62,6 +67,15 @@ class Medicine(db.Model):
     med_dosage = db.Column(db.String(32), nullable=False)
     med_frequency = db.Column(db.String(32), nullable=False)
     med_date = db.Column(db.Date, nullable=False)
+    history_user_id = db.Column(db.Integer, nullable=False)
+
+class Vitals(db.Model):
+    __tablename__ = 'vitals'
+    vital_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('usertable.user_id'), nullable=False)
+    vital_name = db.Column(db.String(32), nullable=False)
+    vital_value = db.Column(db.String(32), nullable=False)
+    vital_date = db.Column(db.Date, nullable=False)
     history_user_id = db.Column(db.Integer, nullable=False)
 
 class Vaccine(db.Model):
