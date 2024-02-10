@@ -209,3 +209,20 @@ def get_probable():
     pass
 
 app.run(debug=True)
+
+def get_all_data(user_id):
+    assert type(user_id) == str
+    user_id = request.json.get(user_id)
+    lst = []
+    lst.append(Notes.query.filter_by(user_id=user_id).all())
+    lst.append(Medicine.query.filter_by(user_id=user_id).all())
+    lst.append(Vitals.query.filter_by(user_id=user_id).all())
+    lst.append(Vaccine.query.filter_by(user_id=user_id).all())
+    lst.append(LabResult.query.filter_by(user_id=user_id).all())
+    lst.append(Surgeries.query.filter_by(user_id=user_id).all())
+    lst.append(Emergencies.query.filter_by(user_id=user_id).all())
+    lst.append(Diagnosis.query.filter_by(user_id=user_id).all())
+    lst.append(Symptoms.query.filter_by(user_id=user_id).all())
+    
+    print(lst)
+    return lst

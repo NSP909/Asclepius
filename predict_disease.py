@@ -2,6 +2,7 @@ from gemini_context_manager import GeminiContextManager
 from dotenv import load_dotenv
 import google.generativeai as genai
 import os
+from flask import get_all_data
 
 load_dotenv()
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
@@ -41,6 +42,17 @@ return format:
 IMPORTANT: FOLLOW THE PROVIDED RETURN FORMAT EXACTLY.
 """
 
-def predict_disease(input):
-    chat = model.start_chat()
-    response = chat.send_message()
+def predict_disease(user_id):
+    if type(user_id) != str:
+        user_id = str(user_id)
+    info_list = get_all_data(user_id)
+    
+    """chat = model.start_chat()
+    response = chat.send_message()"""
+
+def main():
+    name = "1"
+    predict_disease()
+
+if __name__ == "__main__":
+    main()
