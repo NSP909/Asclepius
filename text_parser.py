@@ -7,7 +7,7 @@ load_dotenv()
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 genai.configure(api_key=GOOGLE_API_KEY)
 
-class Parser:
+class TextParser:
     def __init__(self):
         
         context_manager = GeminiContextManager()
@@ -35,39 +35,16 @@ class Parser:
         """)
         
         context_manager.add_context("model","Certainly, I can help you with that.")
-        
-        
-        
-        safety_sttings = [
-            {
-                "category": "HARM_CATEGORY_HARASSMENT",
-                "threshold": "BLOCK_NONE"
-            },
-            {
-                "category": "HARM_CATEGORY_HATE_SPEECH",
-                "threshold": "BLOCK_NONE"
-            },
-            {
-                "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-                "threshold": "BLOCK_NONE"
-            },
-            {
-                "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-                "threshold": "BLOCK_NONE"
-            }
-        ]
 
         self.system_prompt = context_manager.get_context()
-        model = genai.GenerativeModel("gemini-pro",safety_settings=safety_sttings)
-        self.chat = model.start_chat(history=self.system_prompt)
     
-    def parse(self, text):
-        self.chat.history = self.system_prompt
-        response = self.chat.send_message(text)
+    def parse(self, text, chat):
+        chat.history = self.system_prompt
+        response = chat.send_message(text)
         return response.text
 
 def main():
-    parser = Parser()
+    parser = TextParser()
     response = parser.parse("""
 
     Patient ID: #123456

@@ -26,34 +26,11 @@ class Translator:
                             
         """)
 
-        # model config
-
-        safety_sttings = [
-            {
-                "category": "HARM_CATEGORY_HARASSMENT",
-                "threshold": "BLOCK_NONE"
-            },
-            {
-                "category": "HARM_CATEGORY_HATE_SPEECH",
-                "threshold": "BLOCK_NONE"
-            },
-            {
-                "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-                "threshold": "BLOCK_NONE"
-            },
-            {
-                "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-                "threshold": "BLOCK_NONE"
-            }
-        ]
-
         self.system_prompt = context_manager.get_context()
-        model = genai.GenerativeModel("gemini-pro",safety_settings=safety_sttings)
-        self.chat = model.start_chat(history=self.system_prompt)
     
-    def translate(self, text):
-        self.chat.history = self.system_prompt
-        response = self.chat.send_message(text)
+    def translate(self, text, chat):
+        chat.history = self.system_prompt
+        response = chat.send_message(text)
         return response.text
     
     def print_history(self):
