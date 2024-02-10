@@ -1,16 +1,14 @@
 import { Upload } from 'lucide-react';
+import {Link, Routes, Route} from "react-router-dom";
 import React from 'react';
-import SendAV from './components/Upload.js' 
-import Header from './components/Header.js'
+import AddReport from './AddReport';
 
 const Main = () => {
     return(
         <div className="flex w-full h-screen overflow-y-hidden">
             <Sidebar/>
-            <div className="flex flex-col w-full h-screen overflow-y-hidden items-center">
-                <Header/>
-                <SendAV/>
-            </div>
+            {/* this is the upload file page */}
+            <AddReport/>
         </div>
     )
 }

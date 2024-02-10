@@ -6,7 +6,7 @@ const Header = () => {
     const [isOpen, setIsOpen] = useState(false);
   
     return (
-      <header className="w-full items-center bg-gray-100 border-b border-b-gray-700 py-2 px-6 hidden sm:flex">
+      <header className="w-full items-center bg-white shadow-lg py-2 px-6 hidden sm:flex">
         <div className="w-1/2"></div>
         <div className="relative w-1/2 flex justify-end">
           <button onClick={() => setIsOpen(!isOpen)} className="relative z-10 w-12 h-12 rounded-full overflow-hidden border-4 border-gray-400 hover:border-gray-300 focus:border-gray-300 focus:outline-none">
