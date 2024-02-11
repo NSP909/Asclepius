@@ -1,12 +1,11 @@
 import React from "react";
 import axios from "axios"; // Don't forget to import axios
 
-const FullReport = async (userId) => {
+const Summary = async (userId) => {
   try {
     // Make Axios GET request with user ID as a parameter
-    const response = await axios.post('http://104.248.110.113:5000/getentirehistory', 
-    { user_id: userId} 
-      );
+    const response = await axios.post('http://104.248.110.113:5000/summarise', 
+        { data: userId });
     console.log(response.data);
 
     // Handle response data or other actions here
@@ -15,5 +14,5 @@ const FullReport = async (userId) => {
   }
 };
 
-export default FullReport;
+export default Summary;
 

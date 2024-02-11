@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import getWindowDimensions from "./Window";
+import FullReport from "./FullReport";
+import Summary from "./Summary";
 const PatientsList = () => {
   const [patientsData, setPatientsData] = useState([]);
 
@@ -21,12 +23,26 @@ const PatientsList = () => {
 
   const handleFullReport = (userId) => {
     console.log(`Fetching Full Report for user ID: ${userId}`);
-    // Implement the logic for fetching the Full Report here
+    
+    FullReport(userId)
+      .then(data => {
+        console.log("Full Report Data:", data);
+      })
+      .catch(error => {
+        console.error("Error fetching Full Report:", error);
+      });
   };
 
   const handleSummary = (userId) => {
     console.log(`Fetching Summary for user ID: ${userId}`);
-    // Implement the logic for fetching the Summary here
+    
+    Summary(userId)
+    .then(data => {
+      console.log("Full Report Data:", data);
+    })
+    .catch(error => {
+      console.error("Error fetching Full Report:", error);
+    });
   };
 
   const handlePredictions = (userId) => {
