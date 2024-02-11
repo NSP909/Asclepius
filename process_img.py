@@ -1,4 +1,3 @@
-#TODO: get the image and if it is a xray or mri image, skip to data extraction. Otherwise, check the language and pass the image to OCR.
 from dotenv import load_dotenv
 import google.generativeai as genai
 import os
@@ -20,6 +19,9 @@ respnose format: {{ "type": "xray/mri", "data": "~If there is any alarming infor
 
 2. If the image is not a X-ray or MRI image:
 response format: {{ "type": "document", "data": "~Language of the text~" }}
+
+IMPORTANT: FOLLOW THE RESPONSE FORMAT STRICTLY.
+IMPORTANT: IF THE IMAGE IS NOT A X-RAY OR MRI IMAGE, IN THE DATA FIELD, PROVIDE ONLY THE LANGUAGE OF THE TEXT IN THE IMAGE.
 """
 
 def convert_to_pil(imgbase64):
