@@ -3,6 +3,7 @@ import { Link, Routes, Route } from "react-router-dom";
 import React from "react";
 import AddReport from "./AddReport";
 import DashBoard from "./DashBoard";
+import Reports from "./Reports";
 
 const Main = () => {
   return (
@@ -12,6 +13,7 @@ const Main = () => {
       <Routes>
         <Route path="/add" element={<AddReport />} />
         <Route path="/" element={<DashBoard />} />
+        <Route path="/reports" element={<Reports />} />
       </Routes>
     </div>
   );
@@ -41,13 +43,11 @@ const Sidebar = () => {
           <i className="fas fa-tachometer-alt mr-3"></i>
           Doctor's Dashboard
         </a>
-        <a
-          href="blank.html"
-          className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item"
-        >
-          <i className="fas fa-sticky-note mr-3"></i>
-          View Reports
-        </a>
+        <Link to="/d/reports">
+          <button className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+           <i className="fas fa-table mr-3"></i>Reports
+          </button>
+        </Link>
         <a
           href="tables.html"
           className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item"
