@@ -1,3 +1,7 @@
+--insert new user
+INSERT INTO usertable (username, user_type) VALUES ('user1', 1);
+INSERT INTO usertable (username, user_type) VALUES ('user2', 2);
+
 -- Insert into userpwd
 INSERT INTO userpwd (user_id, pwd) VALUES (1, 'password1');
 INSERT INTO userpwd (user_id, pwd) VALUES (2, 'password2');

@@ -26,12 +26,16 @@ from summary import summarize
 
 from flask import current_app, g
 
+from flask_cors import CORS
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql+psycopg2://postgres:postgres@localhost:5432/postgres'
 db = SQLAlchemy(app)
 
 loginManager = LoginManager()
 loginManager.init_app(app)
+
+CORS(app, origins="*")
 
 class User(db.Model):
     __tablename__ = 'usertable'
@@ -229,7 +233,7 @@ def get_entire_history():
     user_id = request.json.get("user_id")
     notes = Notes.query.filter_by(user_id=user_id).all()
     medicine = Medicine.query.filter_by(user_id=user_id).all()
-    Vitals = Vitals.query.filter_by(user_id=user_id).all()
+    vitals = Vitals.query.filter_by(user_id=user_id).all()
     vaccine = Vaccine.query.filter_by(user_id=user_id).all()
     lab_result = LabResult.query.filter_by(user_id=user_id).all()
     surgeries = Surgeries.query.filter_by(user_id=user_id).all()
@@ -239,14 +243,14 @@ def get_entire_history():
 
     return jsonify({
         "notes": [{"note": note.note, "note_date": note.note_date} for note in notes],
-        "medicine": [{"med_name": med.med_name, "med_dosage": med.med_dosage, "med_frequency": med.med_frequency, "med_date": med.med_date} for med in medicine],
-        "vitals": [{"vital_name": vital.vital_name, "vital_value": vital.vital_value, "vital_date": vital.vital_date} for vital in Vitals],
-        "vaccine": [{"vac_name": vac.vac_name, "vac_date": vac.vac_date} for vac in vaccine],
-        "lab_result": [{"lab_result": lab.lab_result, "lab_date": lab.lab_date} for lab in lab_result],
-        "surgeries": [{"surgery": surgery.surgery, "surgery_date": surgery.surgery_date} for surgery in surgeries],
-        "emergencies": [{"emergency_name": emergency.emergency_name, "emergency_date": emergency.emergency_date} for emergency in emergencies],
-        "diagnosis": [{"diagnosis": diag.diagnosis, "diagnosis_date": diag.diag_date} for diag in diagnosis],
-        "symptoms": [{"symptom": symptom.symptom, "symptom_date": symptom.symptom_date} for symptom in symptoms]
+        "medicine": [{"med_name": med.med_name, "med_dosage": med.med_dosage, "med_frequency": med.med_frequency, "med_date": med.med_date} for med in medicine if medicine is not None],
+        "vitals": [{"vital_name": vital.vital_name, "vital_value": vital.vital_value, "vital_date": vital.vital_date} for vital in vitals if vitals is not None],
+        "vaccine": [{"vac_name": vac.vac_name, "vac_date": vac.vac_date} for vac in vaccine if vaccine is not None],
+        "lab_result": [{"lab_result": lab.lab_result, "lab_date": lab.lab_date} for lab in lab_result if lab_result is not None],
+        "surgeries": [{"surgery": surgery.surgery, "surgery_date": surgery.surgery_date} for surgery in surgeries if surgeries is not None],
+        "emergencies": [{"emergency_name": emergency.emergency_name, "emergency_date": emergency.emergency_date} for emergency in emergencies if emergencies is not None],
+        "diagnosis": [{"diagnosis": diag.diagnosis, "diagnosis_date": diag.diag_date} for diag in diagnosis if diagnosis is not None],
+        "symptoms": [{"symptom": symptom.symptom, "symptom_date": symptom.symptom_date} for symptom in symptoms if symptoms is not None]
     })
 
 @app.route("/convertNLPtoSQL", methods=["POST"])
@@ -258,8 +262,8 @@ def perform_query():
     query = request.json.get("query")
     return jsonify({"result": db.engine.execute(query).fetchall()})
 
-@app.route("/summarize", methods=["GET"])
-def summarize():
+@app.route("/summarise", methods=["GET"])
+def summarise():
     data = request.json.get("data")
     data_string = str(data)
     summary = summarize(data_string)
