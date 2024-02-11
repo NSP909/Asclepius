@@ -4,6 +4,7 @@ import React from "react";
 import AddReport from "./AddReport";
 import DashBoard from "./DashBoard";
 import Reports from "./Reports";
+import PatientsList from "./PatientList";
 
 const Main = () => {
   return (
@@ -14,6 +15,7 @@ const Main = () => {
         <Route path="/add" element={<AddReport />} />
         <Route path="/" element={<DashBoard />} />
         <Route path="/reports" element={<Reports />} />
+        <Route path="/Patients" element={<PatientsList />} />
       </Routes>
     </div>
   );
@@ -48,13 +50,11 @@ const Sidebar = () => {
            <i className="fas fa-table mr-3"></i>Reports
           </button>
         </Link>
-        <a
-          href="tables.html"
-          className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item"
-        >
-          <i className="fas fa-table mr-3"></i>
-          Predictions
-        </a>
+        <Link to="/d/Patients">
+          <button className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+           <i className="fas fa-table mr-3"></i>Patient List
+          </button>
+        </Link>
         <a
           href="forms.html"
           className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item"
