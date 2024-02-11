@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import getWindowDimensions from "./Window";
 import FullReport from "./FullReport";
 import Summary from "./Summary";
+import Prediction from "./Prediction";
 const PatientsList = () => {
   const [patientsData, setPatientsData] = useState([]);
 
@@ -47,7 +48,14 @@ const PatientsList = () => {
 
   const handlePredictions = (userId) => {
     console.log(`Fetching Predictions for user ID: ${userId}`);
-    // Implement the logic for fetching Predictions here
+    
+    Prediction(userId)
+    .then(data => {
+      console.log("Full Report Data:", data);
+    })
+    .catch(error => {
+      console.error("Error fetching Full Report:", error);
+    });
   };
 
   return (

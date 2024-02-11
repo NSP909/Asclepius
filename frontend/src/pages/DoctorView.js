@@ -6,6 +6,7 @@ import DashBoard from "./DashBoard";
 
 import PatientsList from "./PatientList";
 import SearchPredict from "./SearchPredict";
+import SearchBarResults from "./SearchPredict";
 
 const Main = () => {
   return (
@@ -16,6 +17,7 @@ const Main = () => {
         <Route path="/add" element={<AddReport />} />
         <Route path="/" element={<DashBoard />} />
         <Route path="/Patients" element={<PatientsList />} />
+        <Route path="/Search" element={<SearchBarResults />} />
       </Routes>
     </div>
   );
@@ -44,13 +46,11 @@ const Sidebar = () => {
             <i className="fas fa-plus mr-3"></i> Patient List
           </button>
         </Link>
-        <a
-          href="tables.html"
-          className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item"
-        >
-          <i className="fas fa-table mr-3"></i>
-          Predictions
-        </a>
+        <Link to="/d/Search">
+          <button  className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+            <i className="fas fa-plus mr-3"></i> Search
+          </button>
+        </Link>
         <a
           href="forms.html"
           className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item"
