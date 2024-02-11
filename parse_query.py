@@ -80,7 +80,7 @@ def parse_query(input_text):
     return response
 
 def main():
-    response = parse_query("I want all the medicine prescription")
+    response = parse_query("I want symptom recorsds of flu or cold from 2020-01-01 to 2021-01-01.")
     print(response)
     
 if __name__ == "__main__":
