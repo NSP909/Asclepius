@@ -103,7 +103,9 @@ function SendAV() {
           required
         />
         </div>
+        <div className="pl-14">
         {fileName && <p>Chosen file: {fileName}</p>}
+        </div>
       </div>
       <Transcript transdata={transcriptData} patient = {patientChoice} sendJSONData = {sendData} />
     </div>
