@@ -278,7 +278,7 @@ def save():
             new_medicine = Medicine(user_id=user_id, history_user_id=history_user_id, med_name=medicine['med_name'], med_dosage=medicine['med_dosage'], med_frequency=medicine['med_frequency'], med_date=medicine['med_date'])
             db.session.add(new_medicine)
 
-    if 'vacine' in data and data['vaccine']:
+    if 'vaccine' in data and data['vaccine']:
         for vaccine in data['vaccine']:
             new_vaccine = Vaccine(user_id=user_id, history_user_id=history_user_id, vac_name=vaccine['vac_name'], vac_date=vaccine['vac_date'])
             db.session.add(new_vaccine)
