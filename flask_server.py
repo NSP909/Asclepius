@@ -22,6 +22,7 @@ from upload_pipeline import upload_pipeline
 
 from parse_query import parse_query
 from predict_disease import predict_disease
+from summary import summarize
 
 from flask import current_app, g
 
@@ -266,7 +267,10 @@ def perform_query():
 
 @app.route("/summarize", methods=["GET"])
 def summarize():
-    pass
+    data = request.json.get("data")
+    data_string = str(data)
+    summary = summarize(data_string)
+    return jsonify({"summary": summary})
 
 @app.route("/getprobable", methods=["GET"])
 def get_probable():
