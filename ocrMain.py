@@ -3,7 +3,7 @@ import json
 import base64
 from google.auth.transport.requests import Request
 from google.oauth2 import service_account
-from reportlab.pdfgen import canvas
+#from reportlab.pdfgen import canvas
 from dotenv import load_dotenv
 import os
 

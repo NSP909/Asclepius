@@ -23,8 +23,11 @@ from upload_pipeline import upload_pipeline
 from parse_query import parse_query
 from predict_disease import predict_disease
 
+from flask import current_app, g
+
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = connection_string
+app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql+psycopg2://postgres:postgres@localhost:5432/postgres'
+app.config["SQLALCHEMY_ECHO"] = True
 db = SQLAlchemy(app)
 
 loginManager = LoginManager()
@@ -139,7 +142,9 @@ def load_user(user_id):
 def login():
     username = request.json.get("username")
     password = request.json.get("password")
+    print(username, password)
     user = User.query.filter_by(username=username).first()
+    print("got user")
     if user is None:
         return jsonify({"message": "Invalid username or password"}), 400
     user_pwd = UserPwd.query.filter_by(user_id=user.user_id).first()
