@@ -3,9 +3,10 @@ import { Link, Routes, Route } from "react-router-dom";
 import React from "react";
 import AddReport from "./AddReport";
 import DashBoard from "./DashBoard";
-
+import Reports from "./Reports";
 import PatientsList from "./PatientList";
 import SearchPredict from "./SearchPredict";
+import SummaryPage from "./SummaryPage";
 import SearchBarResults from "./SearchPredict";
 
 const Main = () => {
@@ -18,6 +19,8 @@ const Main = () => {
         <Route path="/" element={<DashBoard />} />
         <Route path="/Patients" element={<PatientsList />} />
         <Route path="/Search" element={<SearchBarResults />} />
+        <Route path="/Patients/Reports/:id" element={<Reports />} />
+        <Route path="/Patients/Summary/:id" element={<SummaryPage />} />
       </Routes>
     </div>
   );
