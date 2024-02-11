@@ -8,7 +8,7 @@ function SendAV() {
   const url = "http://127.0.0.1:5000"; //change this to the localhost url
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileName, setFileName] = useState('');
-  const [transcriptData, setTranscriptData] = useState('');
+  const [transcriptData, setTranscriptData] = useState("");
   const [patientsData, setPatientsData] = useState([]);
   const [patientChoice, setPatientChoice] = useState('');
 
@@ -37,7 +37,8 @@ function SendAV() {
 
   //to store the patient choice 
   const handlePatientChoice = (e) => {
-    setPatientChoice(e.target.value);
+    console.log(e);
+    setPatientChoice(e);
   }
 
 
@@ -58,7 +59,10 @@ function SendAV() {
       axios.post('http://104.248.110.113:5000/transcribe', { imagebase64: base64Image }) //add in the actual endpoint
         .then(response => {
           console.log('Image uploaded successfully:', response.data);
-          setTranscriptData(response.data);
+          const parsedData = JSON.parse(response.data.data);
+          const formattedData = JSON.stringify(parsedData, null, 2); // Use 2 spaces for indentation
+          console.log(formattedData);
+          setTranscriptData(formattedData);
         })
         .catch(error => {
           console.error('Error uploading image:', error);
@@ -76,7 +80,7 @@ function SendAV() {
         <p className="px-10 text-center text-2xl mt-5 max-w-[100%]">
           Upload clinical records{" "}
         </p>
-        <div className="flex justify-center w-[100%]">
+        <div className="flex justify-center w-[100%] items-center gap-5">
           <PatientDropDown patients={patientsData} handlePatientChoice={handlePatientChoice}/>
           <label
           htmlFor="image"
@@ -98,7 +102,7 @@ function SendAV() {
         </div>
         {fileName && <p>Chosen file: {fileName}</p>}
       </div>
-      <Transcript text={transcriptData}/>
+      <Transcript transdata={transcriptData} patient = {patientChoice}/>
     </div>
   );
 }

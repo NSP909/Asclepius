@@ -9,7 +9,7 @@ const PatientDropDown = ({patients, handlePatientChoice}) => {
     };
 
   return (
-    <div className="relative inline-block text-left">
+    <div className="relative inline-block text-left mt-5 rounded-sm h-[50px] md:w-[120px] md:h-[60px] md:text-xl">
       <div>
         <button type="button" className="inline-flex justify-center w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
         onClick={toggleDropdown}>
@@ -28,7 +28,7 @@ const PatientDropDown = ({patients, handlePatientChoice}) => {
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left"
                 role="menuitem"
                 onClick={(e) => {
-                    handlePatientChoice(e);
+                    handlePatientChoice(patient.username);
                     setName(patient.fullname)
                     toggleDropdown();
                     console.log('Selected:', patient.fullname)}} // Handle selection
