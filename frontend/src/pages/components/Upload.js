@@ -1,15 +1,30 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Transcript from "./Transcript";
-
+import PatientDropDown from "./PatientDropDown";
 
 //fucntion to upload base64 converted image to the server
 function SendAV() {
   const url = "http://127.0.0.1:5000"; //change this to the localhost url
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileName, setFileName] = useState('');
-  const [transcriptData, setTranscriptData] = useState("{\"medicine\": [{\"med_name\": \"Pen VK\", \"med_dosage\": \"500 mg\", \"med_frequency\": \"1 tab 4 times a day\", \"med_date\": null}, {\"med_name\": \"Pen VK\", \"med_dosage\": \"500 mg\", \"med_frequency\": \"2 tabs ASAP\", \"med_date\": null}], \"notes\": [], \"vaccine\": [], \"lab_result\": [], \"surgeries\": [], \"diagnosis\": [], \"symptoms\": []}"
-  );
+  const [transcriptData, setTranscriptData] = useState('');
+  const [patientsData, setPatientsData] = useState([]);
+  const [patientChoice, setPatientChoice] = useState('');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://104.248.110.113:5000/getpatients");
+        const data = await response.json();
+        setPatientsData(data);
+        console.log(data);
+      } catch (error) {
+        console.error("Error fetching patient data:", error);
+      }
+    }
+    fetchData();
+  },[])
 
   useEffect(() => {
     handleUpload();
@@ -19,6 +34,12 @@ function SendAV() {
     console.log(e.target.files[0]);
     setFileName(e.target.files[0].name);
   };
+
+  //to store the patient choice 
+  const handlePatientChoice = (e) => {
+    setPatientChoice(e.target.value);
+  }
+
 
   const handleUpload = () => {
     
@@ -55,7 +76,9 @@ function SendAV() {
         <p className="px-10 text-center text-2xl mt-5 max-w-[100%]">
           Upload clinical records{" "}
         </p>
-        <label
+        <div className="flex justify-center w-[100%]">
+          <PatientDropDown patients={patientsData} handlePatientChoice={handlePatientChoice}/>
+          <label
           htmlFor="image"
           className="mt-5 rounded-sm w-[80px] text-sm h-[50px] md:w-[50%] md:h-[60px] md:text-xl bg-headerColor text-textColor font-semibold hover:bg-sidebar flex items-center justify-center cursor-pointer shadow-md"
         >
@@ -72,6 +95,7 @@ function SendAV() {
           }}
           required
         />
+        </div>
         {fileName && <p>Chosen file: {fileName}</p>}
       </div>
       <Transcript text={transcriptData}/>
