@@ -37,7 +37,7 @@ const Sidebar = () => {
           href="#"
           className="text-white text-3xl font-semibold hover:text-gray-300"
         >
-          DuoDoc
+          MediCompile
         </a>
         <Link to="/d/add">
           <button className=" mt-10 w-full bg-white cta-btn font-semibold py-2 rounded-br-lg rounded-bl-lg rounded-tr-lg shadow-lg hover:shadow-xl hover:bg-gray-300 flex items-center justify-center">
