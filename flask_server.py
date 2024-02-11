@@ -181,7 +181,7 @@ def get_patients():
 
 @app.route("/transcribe", methods=["POST"])
 def transcribe():
-    return jsonify({"data": upload_pipeline(request.json.get("imagebase64"))})
+    return jsonify({"data": str(upload_pipeline(request.json.get("imagebase64")))})
 
 @app.route("/save", methods=["POST"])
 def save():
