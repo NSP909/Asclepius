@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Transcript from "./Transcript";
 
 
 //fucntion to upload base64 converted image to the server
@@ -7,6 +8,7 @@ function SendAV() {
   const url = "http://127.0.0.1:5000"; //change this to the localhost url
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileName, setFileName] = useState('');
+  const [transcriptData, setTranscriptData] = useState('');
 
   useEffect(() => {
     handleUpload();
@@ -29,9 +31,10 @@ function SendAV() {
     reader.onload = () => {
       const base64Image = reader.result.split(',')[1];
       
-      axios.post('your-api-endpoint-url', { image: base64Image }) //add in the actual endpoint
+      axios.get('your-api-endpoint-url', { imagebase64: base64Image }) //add in the actual endpoint
         .then(response => {
           console.log('Image uploaded successfully:', response.data);
+          setTranscriptData(response.data);
         })
         .catch(error => {
           console.error('Error uploading image:', error);
@@ -51,7 +54,7 @@ function SendAV() {
         </p>
         <label
           htmlFor="image"
-          className="mt-5 rounded-sm w-[80px] text-sm h-[50px] md:w-[100%] md:h-[60px] md:text-xl bg-headerColor text-textColor font-semibold hover:bg-sidebar flex items-center justify-center cursor-pointer shadow-md"
+          className="mt-5 rounded-sm w-[80px] text-sm h-[50px] md:w-[50%] md:h-[60px] md:text-xl bg-headerColor text-textColor font-semibold hover:bg-sidebar flex items-center justify-center cursor-pointer shadow-md"
         >
           Select image file
         </label>
@@ -68,6 +71,7 @@ function SendAV() {
         />
         {fileName && <p>Chosen file: {fileName}</p>}
       </div>
+      <Transcript text={transcriptData}/>
     </div>
   );
 }
