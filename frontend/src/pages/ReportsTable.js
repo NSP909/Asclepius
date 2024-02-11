@@ -7,11 +7,11 @@ const ReportsTable = ({ jsonData }) => {
   // Function to create and return a table for a specific category
   const createAndReturnTable = (category, data) => {
     // Start building the table HTML
-    var tableHTML = `<div class="mb-8 bg-blue-500 text-white rounded-lg p-4">
-      <h2 class="text-2xl font-bold mb-4">${category} Table</h2>
+    var tableHTML = `<div class="mb-8 bg-gray-200 text-[#212936] rounded-sm p-4 border-dashed border-gray-400 border-2">
+      <h2 class="text-base font-bold mb-4">${category}</h2>
       <table class="min-w-full bg-white shadow-md rounded-md mb-4">
         <thead>
-          <tr class="bg-blue-500 text-white font-semibold">`;
+          <tr class="bg-headerColor text-white font-semibold">`;
     // Table headers
     Object.keys(data[0]).forEach((header) => {
       tableHTML += `<th class="py-2 px-4 border">${header}</th>`;
@@ -34,25 +34,17 @@ const ReportsTable = ({ jsonData }) => {
   };
 
   return (
-    <div className="flex flex-wrap justify-center p-4 " style={{ overflow: 'auto', maxHeight: getWindowDimensions().height }}>
-      <div className="flex flex-wrap w-full md:w-1/2">
-        <div className="w-full">{createAndReturnTable("Notes", jsonData.notes)}</div>
-        <div className="w-full">{createAndReturnTable("Medicine", jsonData.medicine)}</div>
-      </div>
-      <div className="flex flex-wrap w-full md:w-1/2">
-        <div className="w-full">{createAndReturnTable("Vaccine", jsonData.vaccine)}</div>
-        <div className="w-full">{createAndReturnTable("Lab Results", jsonData.lab_result)}</div>
-      </div>
-      <div className="flex flex-wrap w-full md:w-1/2">
-        <div className="w-full">{createAndReturnTable("Surgeries", jsonData.surgeries)}</div>
-        <div className="w-full">{createAndReturnTable("Emergencies", jsonData.emergencies)}</div>
-      </div>
-      <div className="flex flex-wrap w-full md:w-1/2">
-        <div className="w-full">{createAndReturnTable("Vitals", jsonData.vitals)}</div>
-        <div className="w-full">{createAndReturnTable("Diagnosis", jsonData.diagnosis)}</div>
-      </div>
-      <div className="w-full md:w-full">{createAndReturnTable("Symptoms", jsonData.symptoms)}</div>
-    </div>
+    <div className="grid grid-cols-2 gap-4 p-4" style={{ overflow: 'auto', maxHeight: getWindowDimensions().height }}>
+    <div>{createAndReturnTable("Clinical Notes", jsonData.notes)}</div>
+    <div>{createAndReturnTable("Medicine", jsonData.medicine)}</div>
+    <div>{createAndReturnTable("Vaccine", jsonData.vaccine)}</div>
+    <div>{createAndReturnTable("Lab Results", jsonData.lab_result)}</div>
+    <div>{createAndReturnTable("Surgeries", jsonData.surgeries)}</div>
+    <div>{createAndReturnTable("Emergencies", jsonData.emergencies)}</div>
+    <div>{createAndReturnTable("Vitals", jsonData.vitals)}</div>
+    <div>{createAndReturnTable("Diagnosis", jsonData.diagnosis)}</div>
+    <div className="col-span-2">{createAndReturnTable("Symptoms", jsonData.symptoms)}</div>
+  </div>
   );
 };
 

@@ -26,19 +26,7 @@ const Sidebar = () => {
           <i className="fas fa-align-left mr-3"></i>
           Account Settings
         </a>
-        {/* <a href="tabs.html" className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
-          <i className="fas fa-tablet-alt mr-3"></i>
-          Tabbed Content
-        </a>
-        <a href="calendar.html" className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
-          <i className="fas fa-calendar mr-3"></i>
-          Calendar
-        </a> */}
       </nav>
-      {/* <a href="#" className="absolute w-full upgrade-btn bottom-0 active-nav-link text-white flex items-center justify-center py-4">
-        <i className="fas fa-arrow-circle-up mr-3"></i>
-        Upgrade to Pro!
-      </a> */}
     </aside>
   );
 }

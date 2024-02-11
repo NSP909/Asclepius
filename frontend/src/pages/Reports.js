@@ -1,5 +1,5 @@
 // Reports.js
-
+import Header from "./components/Header";
 import React from "react";
 import ReportsTable from "./ReportsTable";
 
@@ -18,8 +18,8 @@ const Reports = () => {
   };
 
   return (
-    <div>
-      <h1>Reports Page</h1>
+    <div className="w-screen">
+      <Header/>     
       <ReportsTable jsonData={jsonData} />
     </div>
   );
