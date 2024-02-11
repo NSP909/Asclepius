@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Transcript from "./Transcript";
 
 
 //fucntion to upload base64 converted image to the server
@@ -7,10 +8,12 @@ function SendAV() {
   const url = "http://127.0.0.1:5000"; //change this to the localhost url
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileName, setFileName] = useState('');
+  const [transcriptData, setTranscriptData] = useState("{\"medicine\": [{\"med_name\": \"Pen VK\", \"med_dosage\": \"500 mg\", \"med_frequency\": \"1 tab 4 times a day\", \"med_date\": null}, {\"med_name\": \"Pen VK\", \"med_dosage\": \"500 mg\", \"med_frequency\": \"2 tabs ASAP\", \"med_date\": null}], \"notes\": [], \"vaccine\": [], \"lab_result\": [], \"surgeries\": [], \"diagnosis\": [], \"symptoms\": []}"
+  );
 
   useEffect(() => {
     handleUpload();
-  },[]);
+  },[selectedFile]);
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
     console.log(e.target.files[0]);
@@ -18,20 +21,23 @@ function SendAV() {
   };
 
   const handleUpload = () => {
+    
     if (selectedFile == null) {
       console.error('No file selected');
       return;
     }
-
+    // console.log('this is running')
     const reader = new FileReader();
     reader.readAsDataURL(selectedFile);
 
     reader.onload = () => {
       const base64Image = reader.result.split(',')[1];
+      console.log(base64Image)
       
-      axios.post('your-api-endpoint-url', { image: base64Image }) //add in the actual endpoint
+      axios.post('http://104.248.110.113:5000/transcribe', { imagebase64: base64Image }) //add in the actual endpoint
         .then(response => {
           console.log('Image uploaded successfully:', response.data);
+          setTranscriptData(response.data);
         })
         .catch(error => {
           console.error('Error uploading image:', error);
@@ -51,7 +57,7 @@ function SendAV() {
         </p>
         <label
           htmlFor="image"
-          className="mt-5 rounded-sm w-[80px] text-sm h-[50px] md:w-[100%] md:h-[60px] md:text-xl bg-headerColor text-textColor font-semibold hover:bg-sidebar flex items-center justify-center cursor-pointer shadow-md"
+          className="mt-5 rounded-sm w-[80px] text-sm h-[50px] md:w-[50%] md:h-[60px] md:text-xl bg-headerColor text-textColor font-semibold hover:bg-sidebar flex items-center justify-center cursor-pointer shadow-md"
         >
           Select image file
         </label>
@@ -68,6 +74,7 @@ function SendAV() {
         />
         {fileName && <p>Chosen file: {fileName}</p>}
       </div>
+      <Transcript text={transcriptData}/>
     </div>
   );
 }

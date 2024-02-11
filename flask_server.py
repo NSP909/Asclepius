@@ -22,13 +22,20 @@ from upload_pipeline import upload_pipeline
 
 from parse_query import parse_query
 from predict_disease import predict_disease
+from summary import summarize
+
+from flask import current_app, g
+
+from flask_cors import CORS
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = connection_string
+app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql+psycopg2://postgres:postgres@localhost:5432/postgres'
 db = SQLAlchemy(app)
 
 loginManager = LoginManager()
 loginManager.init_app(app)
+
+CORS(app, origins="*")
 
 class User(db.Model):
     __tablename__ = 'usertable'
@@ -131,10 +138,6 @@ class Symptoms(db.Model):
     symptom_date = db.Column(db.Date, nullable=False)
     history_user_id = db.Column(db.Integer, nullable=False)
 
-@loginManager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
-
 @app.route("/login", methods=["POST"])
 def login():
     username = request.json.get("username")
@@ -145,13 +148,13 @@ def login():
     user_pwd = UserPwd.query.filter_by(user_id=user.user_id).first()
     if user_pwd is None or user_pwd.pwd != password:
         return jsonify({"message": "Invalid username or password"}), 400
-    login_user(user)
     return jsonify({"message": "Logged in successfully", "user_id": user.user_id, "user_type": user.user_type})
 
 @app.route("/getpatients", methods=["GET"])
 def get_patients():
     patients = User.query.filter_by(user_type=1).all()
-
+    print(patients)
+    print(patients[0].user_id)
     for patient in patients:
         patient_info = UserInfo.query.filter_by(user_id=patient.user_id).first()
         patient.fullname = patient_info.fullname
@@ -176,9 +179,9 @@ def get_patients():
         "gender": patient.gender
     } for patient in patients])
 
-@app.route("/transcribe", methods=["GET"])
+@app.route("/transcribe", methods=["POST"])
 def transcribe():
-    return jsonify({"data": upload_pipeline(request.json.get("imagebase64"))})
+    return jsonify({"data": str(upload_pipeline(request.json.get("imagebase64")))})
 
 @app.route("/save", methods=["POST"])
 def save():
@@ -230,7 +233,7 @@ def get_entire_history():
     user_id = request.json.get("user_id")
     notes = Notes.query.filter_by(user_id=user_id).all()
     medicine = Medicine.query.filter_by(user_id=user_id).all()
-    Vitals = Vitals.query.filter_by(user_id=user_id).all()
+    vitals = Vitals.query.filter_by(user_id=user_id).all()
     vaccine = Vaccine.query.filter_by(user_id=user_id).all()
     lab_result = LabResult.query.filter_by(user_id=user_id).all()
     surgeries = Surgeries.query.filter_by(user_id=user_id).all()
@@ -240,14 +243,14 @@ def get_entire_history():
 
     return jsonify({
         "notes": [{"note": note.note, "note_date": note.note_date} for note in notes],
-        "medicine": [{"med_name": med.med_name, "med_dosage": med.med_dosage, "med_frequency": med.med_frequency, "med_date": med.med_date} for med in medicine],
-        "vitals": [{"vital_name": vital.vital_name, "vital_value": vital.vital_value, "vital_date": vital.vital_date} for vital in Vitals],
-        "vaccine": [{"vac_name": vac.vac_name, "vac_date": vac.vac_date} for vac in vaccine],
-        "lab_result": [{"lab_result": lab.lab_result, "lab_date": lab.lab_date} for lab in lab_result],
-        "surgeries": [{"surgery": surgery.surgery, "surgery_date": surgery.surgery_date} for surgery in surgeries],
-        "emergencies": [{"emergency_name": emergency.emergency_name, "emergency_date": emergency.emergency_date} for emergency in emergencies],
-        "diagnosis": [{"diagnosis": diag.diagnosis, "diagnosis_date": diag.diag_date} for diag in diagnosis],
-        "symptoms": [{"symptom": symptom.symptom, "symptom_date": symptom.symptom_date} for symptom in symptoms]
+        "medicine": [{"med_name": med.med_name, "med_dosage": med.med_dosage, "med_frequency": med.med_frequency, "med_date": med.med_date} for med in medicine if medicine is not None],
+        "vitals": [{"vital_name": vital.vital_name, "vital_value": vital.vital_value, "vital_date": vital.vital_date} for vital in vitals if vitals is not None],
+        "vaccine": [{"vac_name": vac.vac_name, "vac_date": vac.vac_date} for vac in vaccine if vaccine is not None],
+        "lab_result": [{"lab_result": lab.lab_result, "lab_date": lab.lab_date} for lab in lab_result if lab_result is not None],
+        "surgeries": [{"surgery": surgery.surgery, "surgery_date": surgery.surgery_date} for surgery in surgeries if surgeries is not None],
+        "emergencies": [{"emergency_name": emergency.emergency_name, "emergency_date": emergency.emergency_date} for emergency in emergencies if emergencies is not None],
+        "diagnosis": [{"diagnosis": diag.diagnosis, "diagnosis_date": diag.diag_date} for diag in diagnosis if diagnosis is not None],
+        "symptoms": [{"symptom": symptom.symptom, "symptom_date": symptom.symptom_date} for symptom in symptoms if symptoms is not None]
     })
 
 @app.route("/convertNLPtoSQL", methods=["POST"])
@@ -259,9 +262,12 @@ def perform_query():
     query = request.json.get("query")
     return jsonify({"result": db.engine.execute(query).fetchall()})
 
-@app.route("/summarize", methods=["GET"])
-def summarize():
-    pass
+@app.route("/summarise", methods=["GET"])
+def summarise():
+    data = request.json.get("data")
+    data_string = str(data)
+    summary = summarize(data_string)
+    return jsonify({"summary": summary})
 
 @app.route("/getprobable", methods=["GET"])
 def get_probable():

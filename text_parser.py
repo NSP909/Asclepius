@@ -41,10 +41,19 @@ class TextParser:
 
         self.system_prompt = context_manager.get_context()
     
+    def cut_off_until_bracket(self, text):
+        bracket_index = text.find('{')
+        if bracket_index != -1:
+            return text[bracket_index:]
+        else:
+            return text
+    
     def parse(self, text, chat):
         chat.history = self.system_prompt
         response = chat.send_message(text)
-        return response.text
+        print("is this?")
+        print(response.text)
+        return self.cut_off_until_bracket(response.text)
 
 def main():
     parser = TextParser()

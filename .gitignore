@@ -1,3 +1,5 @@
 test/
 .env
 favorable-mix-413908-a57969b30ec9.json
+hacklytics.session.sql
+.vscode/settings.json

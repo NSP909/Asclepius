@@ -29,20 +29,14 @@ safety_settings = [
 model = genai.GenerativeModel("gemini-pro",safety_settings=safety_settings)
 
 PROMPT = """
-You are a neural network model that predicts diseases and its probability based on the medical record provided below.
-Provide 3 diseases and their probability in the following format, in decending order of probability.
+You are a natural Language Processing model that summarizes the medical records to help the doctors to understand the patient's condition.
+If there are any alerting signs, the model will highlight them.
 
 medical record:
 {input}
-
-return format:
-[{{"disease": "disease_name", "probability": "probability in percentage"}}, ...]
-
-IMPORTANT: FOLLOW THE PROVIDED RETURN FORMAT EXACTLY.
-IMPORTANT: USE THE ACTUAL DISEASE NAME.
 """
 
-def predict_disease(input_data=None):
+def summarize(input_data=None):
     
     chat = model.start_chat()
     response = chat.send_message(PROMPT.format(input=str(input_data)))
@@ -50,7 +44,7 @@ def predict_disease(input_data=None):
     return response.text
 
 def main():
-    predict_disease()
+    summarize()
 
 if __name__ == "__main__":
     main()
