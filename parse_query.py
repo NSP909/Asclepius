@@ -60,16 +60,9 @@ IMPORTANT: DO NOT INCLUDE BACK QUOTES OR STRING UNRELATED TO THE QUERY.
 context_manager.add_context("model","Certainly, I can help with creating the SQL quey. and I will NOT add any texxts unreltaed to the query")
 
 def sanitize(text):
-    if text.startswith("```sql"):
-        text = text[6:]
-    if text.endswith("```"):
-        text = text[:-3]
-    
-    while text.startswith("\n"):
-        text = text[1:]
-    
-    while text.endswith("\n"):
-        text = text[:-1]
+    text.replace("\n","")
+    text.replace("`","")
+    text.replace("sql","")
     
     return text
 

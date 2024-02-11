@@ -179,7 +179,7 @@ def get_patients():
         "gender": patient.gender
     } for patient in patients])
 
-@app.route("/transcribe", methods=["GET"])
+@app.route("/transcribe", methods=["POST"])
 def transcribe():
     return jsonify({"data": upload_pipeline(request.json.get("imagebase64"))})
 
