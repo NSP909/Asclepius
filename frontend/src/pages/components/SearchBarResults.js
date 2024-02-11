@@ -13,9 +13,9 @@ const SearchPredict = () => {
     event.preventDefault();
     try {
       // Make Axios POST request with searchQuery data
-      const response = await axios.post('your-api-endpoint-url', { text: searchQuery });
+      const response = await axios.post('http://104.248.110.113:5000/convertNLPtoSQL', { text: searchQuery });
       console.log('Search results:', response.data);
-      setSql(response.data);
+      setSql(response.data.query);
 
       // Handle search results or other actions here
     } catch (error) {
@@ -25,7 +25,8 @@ const SearchPredict = () => {
 
   const onSubmit = async () => {
     try {
-        const response = await axios.post('your-api-endpoint-url', {query: sql});
+        console.log('hello')
+        const response = await axios.post('http://104.248.110.113:5000/performquery', {query: sql});
         console.log('Search results:', response.data);
         } catch (error) {
         console.error('Error searching:', error);
@@ -49,7 +50,7 @@ const SearchPredict = () => {
         {sql && <div className=" bg-gray-200 h-[8vh] max-h-[16vh] w-[60vw] overflow-y-auto border-dashed border-2 border-gray-900 p-4">
             <code>{sql}</code>
         </div>}
-        {sql && <button type="submit" className="bg-headerColor hover:bg-blue-600 text-white py-2 px-4 rounded-full">
+        {sql && <button type="submit" onClick={onSubmit} className="bg-headerColor hover:bg-gray-600 text-white py-2 px-4 rounded-full">
         <i class="fas fa-check"></i>
         </button>}
         

@@ -8,7 +8,8 @@ function SendAV() {
   const url = "http://127.0.0.1:5000"; //change this to the localhost url
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileName, setFileName] = useState('');
-  const [transcriptData, setTranscriptData] = useState('');
+  const [transcriptData, setTranscriptData] = useState("{\"medicine\": [{\"med_name\": \"Pen VK\", \"med_dosage\": \"500 mg\", \"med_frequency\": \"1 tab 4 times a day\", \"med_date\": null}, {\"med_name\": \"Pen VK\", \"med_dosage\": \"500 mg\", \"med_frequency\": \"2 tabs ASAP\", \"med_date\": null}], \"notes\": [], \"vaccine\": [], \"lab_result\": [], \"surgeries\": [], \"diagnosis\": [], \"symptoms\": []}"
+  );
 
   useEffect(() => {
     handleUpload();
@@ -36,7 +37,7 @@ function SendAV() {
       axios.post('http://104.248.110.113:5000/transcribe', { imagebase64: base64Image }) //add in the actual endpoint
         .then(response => {
           console.log('Image uploaded successfully:', response.data);
-          setTranscriptData(response.data.json());
+          setTranscriptData(response.data);
         })
         .catch(error => {
           console.error('Error uploading image:', error);
