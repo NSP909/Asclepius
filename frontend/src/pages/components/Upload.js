@@ -12,7 +12,7 @@ function SendAV() {
 
   useEffect(() => {
     handleUpload();
-  },[]);
+  },[selectedFile]);
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
     console.log(e.target.files[0]);
@@ -20,21 +20,23 @@ function SendAV() {
   };
 
   const handleUpload = () => {
+    
     if (selectedFile == null) {
       console.error('No file selected');
       return;
     }
-
+    // console.log('this is running')
     const reader = new FileReader();
     reader.readAsDataURL(selectedFile);
 
     reader.onload = () => {
       const base64Image = reader.result.split(',')[1];
+      console.log(base64Image)
       
-      axios.get('your-api-endpoint-url', { imagebase64: base64Image }) //add in the actual endpoint
+      axios.post('http://104.248.110.113:5000/transcribe', { imagebase64: base64Image }) //add in the actual endpoint
         .then(response => {
           console.log('Image uploaded successfully:', response.data);
-          setTranscriptData(response.data);
+          setTranscriptData(response.data.json());
         })
         .catch(error => {
           console.error('Error uploading image:', error);

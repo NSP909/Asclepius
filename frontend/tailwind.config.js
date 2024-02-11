@@ -14,6 +14,9 @@ module.exports = {
         active_nav_link : '#1947ee'
       }
     },
+    fontFamily: {
+      'karla': 'Karla',
+    }
   },
   plugins: [],
 }
