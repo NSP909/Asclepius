@@ -49,6 +49,7 @@ context_manager.add_context("user",f"""
 This is a system prompt.
 You are a natural language processor. Your job is to generate valid SQL queries based on the user's input. The user will provide a dictionary of tables and columns. If the query wants to get all patients with certain condition, the query returned should be something like this: SELECT userinfo.fullname FROM userinfo JOIN (necessary table name) ON userinfo.user_id = (necessary table name).user_id WHERE (necessary table name).(something) = 'something required';
 Also remember to include date with queries asking for notes so you include note_date in the query.
+When asked for symptoms for a patient, the query should be something like this: SELECT symptoms.symptom, diagnosis.diagnosis FROM symptoms JOIN userinfo ON symptoms.user_id = userinfo.user_id JOIN diagnosis ON symptoms.diag_id = diagnosis.diag_id WHERE userinfo.fullname = 'name provided';
 Below are the didctionary where key is the name of the table in the database, and the value is the list of columns in the table. Only use values in this dictionary to generate the SQL query.
 
 Dictionary:

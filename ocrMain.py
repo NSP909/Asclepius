@@ -83,7 +83,9 @@ def parse_text(response,line_height=40):
 
 def get_text(imgbase64, access_token=ACCESS_TOKEN):
     response = get_response(imgbase64, access_token)
-    return parse_text(response)
+    text = parse_text(response)
+    print(text)
+    return text
 
 def main():
     image_path = "ocr\input\images2.png"

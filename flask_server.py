@@ -190,104 +190,117 @@ def save():
     data = request.json['data']
     username = data.get("username")
     user_id = User.query.filter_by(username=username).first().user_id
-    history_user_id = data.get("history_user_id")
+    history_user_id = 1;
+
+    print(data)
 
     # if any kind of field is None then replace with the string "None" and if any date is None replace with the current date
-    for note in data['notes']:
-        if note['note'] is None:
-            note['note'] = "None"
-        if note['note_date'] is None:
-            note['note_date'] = datetime.now().date()
-
-    for med in data['medicine']:
-        if med['med_name'] is None:
-            med['med_name'] = "None"
-        if med['med_dosage'] is None:
-            med['med_dosage'] = "None"
-        if med['med_frequency'] is None:
-            med['med_frequency'] = "None"
-        if med['med_date'] is None:
-            med['med_date'] = datetime.now().date()
-
-    for vital in data['vitals']:
-        if vital['vital_name'] is None:
-            vital['vital_name'] = "None"
-        if vital['vital_value'] is None:
-            vital['vital_value'] = "None"
-        if vital['vital_date'] is None:
-            vital['vital_date'] = datetime.now().date()
-
-    for vac in data['vaccine']:
-        if vac['vac_name'] is None:
-            vac['vac_name'] = "None"
-        if vac['vac_date'] is None:
-            vac['vac_date'] = datetime.now().date()
-
-    for lab in data['lab_result']:
-        if lab['lab_result'] is None:
-            lab['lab_result'] = "None"
-        if lab['lab_date'] is None:
-            lab['lab_date'] = datetime.now().date()
-
-    for surgery in data['surgeries']:
-        if surgery['surgery'] is None:
-            surgery['surgery'] = "None"
-        if surgery['surgery_date'] is None:
-            surgery['surgery_date'] = datetime.now().date()
-
-    for emergency in data['emergencies']:
-        if emergency['emergency_name'] is None:
-            emergency['emergency_name'] = "None"
-        if emergency['emergency_date'] is None:
-            emergency['emergency_date'] = datetime.now().date()
-
-    for diag in data['diagnosis']:
-        if diag['diagnosis'] is None:
-            diag['diagnosis'] = "None"
-        if diag['diag_date'] is None:
-            diag['diag_date'] = datetime.now().date()
-
-    for symptom in data['symptoms']:
-        if symptom['symptom'] is None:
-            symptom['symptom'] = "None"
-        if symptom['diag_id'] is None:
-            symptom['diag_id'] = "None"
-        if symptom['symptom_date'] is None:
-            symptom['symptom_date'] = datetime.now().date()
-
-    if data['notes']:
+    if 'notes' in data and data['notes']:
         for note in data['notes']:
-            new_note = Notes(user_id=user_id, history_user_id=history_user_id, note=note['note'], note_date=datetime.strptime(note['note_date'], '%Y-%m-%d'))
+            if note['note'] is None:
+                note['note'] = "None"
+            if note['note_date'] is None:
+                note['note_date'] = datetime.now().date()
+
+    if 'medicine' in data and data['medicine']:
+        for med in data['medicine']:
+            if med['med_name'] is None:
+                med['med_name'] = "None"
+            if med['med_dosage'] is None:
+                med['med_dosage'] = "None"
+            if med['med_frequency'] is None:
+                med['med_frequency'] = "None"
+            if med['med_date'] is None:
+                med['med_date'] = datetime.now().date()
+
+    if 'vitals' in data and data['vitals']:
+        for vital in data['vitals']:
+            if vital['vital_name'] is None:
+                vital['vital_name'] = "None"
+            if vital['vital_value'] is None:
+                vital['vital_value'] = "None"
+            if vital['vital_date'] is None:
+                vital['vital_date'] = datetime.now().date()
+
+    if 'vaccine' in data and data['vaccine']:
+        for vac in data['vaccine']:
+            if vac['vac_name'] is None:
+                vac['vac_name'] = "None"
+            if vac['vac_date'] is None:
+                vac['vac_date'] = datetime.now().date()
+
+    if 'lab_result' in data and data['lab_result']:
+        for lab in data['lab_result']:
+            if lab['lab_result'] is None:
+                lab['lab_result'] = "None"
+            if lab['lab_date'] is None:
+                lab['lab_date'] = datetime.now().date()
+
+    if 'surgeries' in data and data['surgeries']:
+        for surgery in data['surgeries']:
+            if surgery['surgery'] is None:
+                surgery['surgery'] = "None"
+            if surgery['surgery_date'] is None:
+                surgery['surgery_date'] = datetime.now().date()
+
+    if 'emergencies' in data and data['emergencies']:
+        for emergency in data['emergencies']:
+            if emergency['emergency_name'] is None:
+                emergency['emergency_name'] = "None"
+            if emergency['emergency_date'] is None:
+                emergency['emergency_date'] = datetime.now().date()
+
+    if 'diagnosis' in data and data['diagnosis']:
+        for diag in data['diagnosis']:
+            if diag['diagnosis'] is None:
+                diag['diagnosis'] = "None"
+            if diag['diag_date'] is None:
+                diag['diag_date'] = datetime.now().date()
+
+    if 'symptoms' in data and data['symptoms']:
+        for symptom in data['symptoms']:
+            if symptom['symptom'] is None:
+                symptom['symptom'] = "None"
+            if symptom['diag_id'] is None:
+                symptom['diag_id'] = "None"
+            if symptom['symptom_date'] is None:
+                symptom['symptom_date'] = datetime.now().date()
+
+    print(data)
+
+    if 'notes' in data and data['notes']:
+        for note in data['notes']:
+            new_note = Notes(user_id=user_id, history_user_id=history_user_id, note=note['note'], note_date=note['note_date'])
             db.session.add(new_note)
 
-    if data['medicine']:
+    if 'medicine' in data and data['medicine']:
         for medicine in data['medicine']:
-            new_medicine = Medicine(user_id=user_id, history_user_id=history_user_id, med_name=medicine['med_name'], med_dosage=medicine['med_dosage'], med_frequency=medicine['med_frequency'], med_date=datetime.strptime(medicine['med_date'], '%Y-%m-%d'))
+            new_medicine = Medicine(user_id=user_id, history_user_id=history_user_id, med_name=medicine['med_name'], med_dosage=medicine['med_dosage'], med_frequency=medicine['med_frequency'], med_date=medicine['med_date'])
             db.session.add(new_medicine)
 
-    if data['vaccine']:
+    if 'vacine' in data and data['vaccine']:
         for vaccine in data['vaccine']:
-            new_vaccine = Vaccine(user_id=user_id, history_user_id=history_user_id, vac_name=vaccine['vac_name'], vac_date=datetime.strptime(vaccine['vac_date'], '%Y-%m-%d'))
+            new_vaccine = Vaccine(user_id=user_id, history_user_id=history_user_id, vac_name=vaccine['vac_name'], vac_date=vaccine['vac_date'])
             db.session.add(new_vaccine)
 
-    if data['lab_result']:
+    if 'lab_result' in data and data['lab_result']:
         for lab_result in data['lab_result']:
-            new_lab_result = LabResult(user_id=user_id, history_user_id=history_user_id, lab_result=lab_result['lab_result'], lab_date=datetime.strptime(lab_result['lab_date'], '%Y-%m-%d'))
+            new_lab_result = LabResult(user_id=user_id, history_user_id=history_user_id, lab_result=lab_result['lab_result'], lab_date=lab_result['lab_date'])
             db.session.add(new_lab_result)
 
-    if data['surgeries']:
+    if 'surgeries' in data and data['surgeries']:
         for surgery in data['surgeries']:
-            new_surgery = Surgeries(user_id=user_id, history_user_id=history_user_id, surgery=surgery['surgery'], surgery_date=datetime.strptime(surgery['surgery_date'], '%Y-%m-%d'))
+            new_surgery = Surgeries(user_id=user_id, history_user_id=history_user_id, surgery=surgery['surgery'], surgery_date=surgery['surgery_date'])
             db.session.add(new_surgery)
 
-    if data['diagnosis']:
+    if 'diagnosis' in data and data['diagnosis']:
         for diagnosis in data['diagnosis']:
-            new_diagnosis = Diagnosis(user_id=user_id, history_user_id=history_user_id, diagnosis=diagnosis['diagnosis'], diag_date=datetime.strptime(diagnosis['diag_date'], '%Y-%m-%d'))
+            new_diagnosis = Diagnosis(user_id=user_id, history_user_id=history_user_id, diagnosis=diagnosis['diagnosis'], diag_date=diagnosis['diag_date'])
             db.session.add(new_diagnosis)
 
-    if data['symptoms']:
+    if 'symptoms' in data and data['symptoms']:
         for symptom in data['symptoms']:
-            new_symptom = Symptoms(user_id=user_id, history_user_id=history_user_id, diag_id=symptom['diag_id'], symptom=symptom['symptom'], symptom_date=datetime.strptime(symptom['symptom_date'], '%Y-%m-%d'))
+            new_symptom = Symptoms(user_id=user_id, history_user_id=history_user_id, diag_id=symptom['diag_id'], symptom=symptom['symptom'], symptom_date=symptom['symptom_date'])
             db.session.add(new_symptom)
 
     db.session.commit()
@@ -322,7 +335,7 @@ def get_entire_history():
 @app.route("/convertNLPtoSQL", methods=["POST"])
 def convert_nlp_to_sql():
     query = parse_query(request.json.get("text"))
-    query = query[query.index("SELECT"):query.index(";")+1]
+    query = query[query.index("SELECT"):]
     return jsonify({"query": query})
 
 @app.route("/performquery", methods=["POST"])
