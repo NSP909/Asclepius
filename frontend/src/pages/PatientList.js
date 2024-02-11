@@ -64,6 +64,8 @@ const PatientsList = () => {
       .catch((error) => {
         console.error("Error fetching Full Report:", error);
       });
+      navigate(`predict/${userId}`);
+
   };
 
   return (

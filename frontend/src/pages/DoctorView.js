@@ -8,6 +8,7 @@ import PatientsList from "./PatientList";
 import SearchPredict from "./SearchPredict";
 import SummaryPage from "./SummaryPage";
 import SearchBarResults from "./SearchPredict";
+import PredictionPage from './PredictionPage';
 
 const Main = () => {
   return (
@@ -21,6 +22,8 @@ const Main = () => {
         <Route path="/Search" element={<SearchBarResults />} />
         <Route path="/Patients/Reports/:id" element={<Reports />} />
         <Route path="/Patients/Summary/:id" element={<SummaryPage />} />
+        <Route path="/Patients/Predict/:id" element={<PredictionPage />} />
+
       </Routes>
     </div>
   );

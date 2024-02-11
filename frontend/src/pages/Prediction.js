@@ -6,7 +6,9 @@ const Prediction = async (userId) => {
     const da = await FullReport(userId);
     const response = await axios.post('http://104.248.110.113:5000/getprobable', 
         { data: da});
-    console.log(response.data);
+    console.log("Actual Prediction " + response.prediction);
+    return response.data
+    
 
     // Handle response data or other actions here
   } catch (error) {
