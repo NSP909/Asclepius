@@ -149,7 +149,6 @@ def login():
     return jsonify({"message": "Logged in successfully", "user_id": user.user_id, "user_type": user.user_type})
 
 @app.route("/getpatients", methods=["GET"])
-@login_required
 def get_patients():
     patients = User.query.filter_by(user_type=1).all()
 
@@ -178,12 +177,10 @@ def get_patients():
     } for patient in patients])
 
 @app.route("/transcribe", methods=["GET"])
-@login_required
 def transcribe():
     return jsonify({"data": upload_pipeline(request.json.get("imagebase64"))})
 
 @app.route("/save", methods=["POST"])
-@login_required
 def save():
     data = request.json.data
     user_id = request.json.data.get("user_id")
@@ -229,7 +226,6 @@ def save():
     return {"message": "Data saved successfully"}, 200
 
 @app.route("/getentirehistory", methods=["GET"])
-@login_required
 def get_entire_history():
     user_id = request.json.get("user_id")
     notes = Notes.query.filter_by(user_id=user_id).all()
@@ -255,23 +251,19 @@ def get_entire_history():
     })
 
 @app.route("/convertNLPtoSQL", methods=["POST"])
-@login_required
 def convert_nlp_to_sql():
     return jsonify({"query": parse_query(request.json.get("text"))})
 
 @app.route("/performquery", methods=["POST"])
-@login_required
 def perform_query():
     query = request.json.get("query")
     return jsonify({"result": db.engine.execute(query).fetchall()})
 
 @app.route("/summarize", methods=["GET"])
-@login_required
 def summarize():
     pass
 
 @app.route("/getprobable", methods=["GET"])
-@login_required
 def get_probable():
     data = request.json.get("data")
     data_string = str(data)
