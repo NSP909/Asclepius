@@ -1,4 +1,4 @@
-import { Upload } from "lucide-react";
+import { SquareUser } from 'lucide-react';
 import { Link, Routes, Route } from "react-router-dom";
 import React from "react";
 import AddReport from "./AddReport";
