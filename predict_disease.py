@@ -29,7 +29,7 @@ safety_settings = [
 model = genai.GenerativeModel("gemini-pro",safety_settings=safety_settings)
 
 PROMPT = """
-You are a neural network model that predicts diseases and its probability based on the medical record provided below.
+You are a neural network model that predicts diseases and its probability based on the various medical records provided below. Make sure to predict based on the latest medical records.
 Provide 3 diseases and their probability in the following format, in decending order of probability.
 
 medical record:

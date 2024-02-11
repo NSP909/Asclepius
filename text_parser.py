@@ -51,7 +51,6 @@ class TextParser:
     def parse(self, text, chat):
         chat.history = self.system_prompt
         response = chat.send_message(text)
-        print("is this?")
         print(response.text)
         return self.cut_off_until_bracket(response.text)
 

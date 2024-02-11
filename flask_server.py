@@ -188,8 +188,72 @@ def transcribe():
 @app.route("/save", methods=["POST"])
 def save():
     data = request.json['data']
-    user_id = data.get("user_id")
+    username = data.get("username")
+    user_id = User.query.filter_by(username=username).first().user_id
     history_user_id = data.get("history_user_id")
+
+    # if any kind of field is None then replace with the string "None" and if any date is None replace with the current date
+    for note in data['notes']:
+        if note['note'] is None:
+            note['note'] = "None"
+        if note['note_date'] is None:
+            note['note_date'] = datetime.now().date()
+
+    for med in data['medicine']:
+        if med['med_name'] is None:
+            med['med_name'] = "None"
+        if med['med_dosage'] is None:
+            med['med_dosage'] = "None"
+        if med['med_frequency'] is None:
+            med['med_frequency'] = "None"
+        if med['med_date'] is None:
+            med['med_date'] = datetime.now().date()
+
+    for vital in data['vitals']:
+        if vital['vital_name'] is None:
+            vital['vital_name'] = "None"
+        if vital['vital_value'] is None:
+            vital['vital_value'] = "None"
+        if vital['vital_date'] is None:
+            vital['vital_date'] = datetime.now().date()
+
+    for vac in data['vaccine']:
+        if vac['vac_name'] is None:
+            vac['vac_name'] = "None"
+        if vac['vac_date'] is None:
+            vac['vac_date'] = datetime.now().date()
+
+    for lab in data['lab_result']:
+        if lab['lab_result'] is None:
+            lab['lab_result'] = "None"
+        if lab['lab_date'] is None:
+            lab['lab_date'] = datetime.now().date()
+
+    for surgery in data['surgeries']:
+        if surgery['surgery'] is None:
+            surgery['surgery'] = "None"
+        if surgery['surgery_date'] is None:
+            surgery['surgery_date'] = datetime.now().date()
+
+    for emergency in data['emergencies']:
+        if emergency['emergency_name'] is None:
+            emergency['emergency_name'] = "None"
+        if emergency['emergency_date'] is None:
+            emergency['emergency_date'] = datetime.now().date()
+
+    for diag in data['diagnosis']:
+        if diag['diagnosis'] is None:
+            diag['diagnosis'] = "None"
+        if diag['diag_date'] is None:
+            diag['diag_date'] = datetime.now().date()
+
+    for symptom in data['symptoms']:
+        if symptom['symptom'] is None:
+            symptom['symptom'] = "None"
+        if symptom['diag_id'] is None:
+            symptom['diag_id'] = "None"
+        if symptom['symptom_date'] is None:
+            symptom['symptom_date'] = datetime.now().date()
 
     if data['notes']:
         for note in data['notes']:
@@ -257,7 +321,9 @@ def get_entire_history():
 
 @app.route("/convertNLPtoSQL", methods=["POST"])
 def convert_nlp_to_sql():
-    return jsonify({"query": parse_query(request.json.get("text"))})
+    query = parse_query(request.json.get("text"))
+    query = query[query.index("SELECT"):query.index(";")+1]
+    return jsonify({"query": query})
 
 @app.route("/performquery", methods=["POST"])
 def perform_query():
@@ -270,6 +336,7 @@ def perform_query():
 @app.route("/summarise", methods=["POST"])
 def summarise():
     data = request.json.get("data")
+    print(data)
     data_string = str(data)
     summary = summarize(data_string)
     return jsonify({"summary": summary})
@@ -278,6 +345,7 @@ def summarise():
 def get_probable():
     data = request.json.get("data")
     data_string = str(data)
+    print(data_string)
     prediction = predict_disease(data_string)
     return jsonify({"prediction": prediction})
 
