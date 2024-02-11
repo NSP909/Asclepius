@@ -2,6 +2,7 @@ import google.generativeai as genai
 from dotenv import load_dotenv
 import os
 from gemini_context_manager import GeminiContextManager
+import re
 
 load_dotenv()
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
@@ -60,10 +61,13 @@ IMPORTANT: DO NOT INCLUDE BACK QUOTES OR STRING UNRELATED TO THE QUERY.
 context_manager.add_context("model","Certainly, I can help with creating the SQL quey. and I will NOT add any texxts unreltaed to the query")
 
 def sanitize(text):
+    print(text)
     text = text.replace("\n","")
     text = text.replace("`","")
     text = text.replace("sql","")
-    
+    #text = text.replace("*"," * ")
+    #text = re.sub("\W+", " ", text)
+    print(text)
     return text
 
 def parse_query(input_text):

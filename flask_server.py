@@ -28,6 +28,8 @@ from flask import current_app, g
 
 from flask_cors import CORS
 
+from sqlalchemy import text
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql+psycopg2://postgres:postgres@localhost:5432/postgres'
 db = SQLAlchemy(app)
@@ -35,7 +37,7 @@ db = SQLAlchemy(app)
 loginManager = LoginManager()
 loginManager.init_app(app)
 
-CORS(app, origins="*")
+CORS(app)
 
 class User(db.Model):
     __tablename__ = 'usertable'
@@ -185,9 +187,9 @@ def transcribe():
 
 @app.route("/save", methods=["POST"])
 def save():
-    data = request.json.data
-    user_id = request.json.data.get("user_id")
-    history_user_id = request.json.data.get("history_user_id")
+    data = request.json['data']
+    user_id = data.get("user_id")
+    history_user_id = data.get("history_user_id")
 
     if data['notes']:
         for note in data['notes']:
@@ -221,14 +223,14 @@ def save():
 
     if data['symptoms']:
         for symptom in data['symptoms']:
-            new_symptom = Symptoms(user_id=user_id, history_user_id=history_user_id, symptom=symptom['symptom'], symptom_date=datetime.strptime(symptom['symptom_date'], '%Y-%m-%d'))
+            new_symptom = Symptoms(user_id=user_id, history_user_id=history_user_id, diag_id=symptom['diag_id'], symptom=symptom['symptom'], symptom_date=datetime.strptime(symptom['symptom_date'], '%Y-%m-%d'))
             db.session.add(new_symptom)
 
     db.session.commit()
 
     return {"message": "Data saved successfully"}, 200
 
-@app.route("/getentirehistory", methods=["GET"])
+@app.route("/getentirehistory", methods=["POST"])
 def get_entire_history():
     user_id = request.json.get("user_id")
     notes = Notes.query.filter_by(user_id=user_id).all()
@@ -250,7 +252,7 @@ def get_entire_history():
         "surgeries": [{"surgery": surgery.surgery, "surgery_date": surgery.surgery_date} for surgery in surgeries if surgeries is not None],
         "emergencies": [{"emergency_name": emergency.emergency_name, "emergency_date": emergency.emergency_date} for emergency in emergencies if emergencies is not None],
         "diagnosis": [{"diagnosis": diag.diagnosis, "diagnosis_date": diag.diag_date} for diag in diagnosis if diagnosis is not None],
-        "symptoms": [{"symptom": symptom.symptom, "symptom_date": symptom.symptom_date} for symptom in symptoms if symptoms is not None]
+        "symptoms": [{"diag_id": symptom.diag_id, "symptom": symptom.symptom, "symptom_date": symptom.symptom_date} for symptom in symptoms if symptoms is not None]
     })
 
 @app.route("/convertNLPtoSQL", methods=["POST"])
@@ -260,16 +262,19 @@ def convert_nlp_to_sql():
 @app.route("/performquery", methods=["POST"])
 def perform_query():
     query = request.json.get("query")
-    return jsonify({"result": db.engine.execute(query).fetchall()})
+    print(f"Executing query: {query}")
+    with db.engine.connect() as connection:
+        result = connection.execute(text(query))
+    return jsonify({"result": [dict(row._asdict()) for row in result]})
 
-@app.route("/summarise", methods=["GET"])
+@app.route("/summarise", methods=["POST"])
 def summarise():
     data = request.json.get("data")
     data_string = str(data)
     summary = summarize(data_string)
     return jsonify({"summary": summary})
 
-@app.route("/getprobable", methods=["GET"])
+@app.route("/getprobable", methods=["POST"])
 def get_probable():
     data = request.json.get("data")
     data_string = str(data)
