@@ -36,7 +36,7 @@ medical record:
 {input}
 
 return format:
-{{ [{{"disease": "disease_name", "probability": "~probability~"}}, ...]}}
+[{{"disease": "disease_name", "probability": "~probability~"}}, ...]
 
 IMPORTANT: FOLLOW THE PROVIDED RETURN FORMAT EXACTLY.
 IMPORTANT: USE THE ACTUAL DISEASE NAME.

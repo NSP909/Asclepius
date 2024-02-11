@@ -21,7 +21,7 @@ connection_string = os.getenv("CONNECTION_STRING")
 from upload_pipeline import upload_pipeline
 
 from parse_query import parse_query
-
+from predict_disease import predict_disease
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = connection_string
@@ -273,6 +273,9 @@ def summarize():
 @app.route("/getprobable", methods=["GET"])
 @login_required
 def get_probable():
-    pass
+    data = request.json.get("data")
+    data_string = str(data)
+    prediction = predict_disease(data_string)
+    return jsonify({"prediction": prediction})
 
 app.run(debug=True)
