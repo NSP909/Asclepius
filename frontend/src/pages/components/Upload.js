@@ -11,6 +11,7 @@ function SendAV() {
   const [transcriptData, setTranscriptData] = useState("");
   const [patientsData, setPatientsData] = useState([]);
   const [patientChoice, setPatientChoice] = useState('');
+  const [sendData, setSendData] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,6 +61,8 @@ function SendAV() {
         .then(response => {
           console.log('Image uploaded successfully:', response.data);
           const parsedData = JSON.parse(response.data.data);
+          console.log(parsedData);
+          setSendData(parsedData);
           const formattedData = JSON.stringify(parsedData, null, 2); // Use 2 spaces for indentation
           console.log(formattedData);
           setTranscriptData(formattedData);
@@ -102,7 +105,7 @@ function SendAV() {
         </div>
         {fileName && <p>Chosen file: {fileName}</p>}
       </div>
-      <Transcript transdata={transcriptData} patient = {patientChoice}/>
+      <Transcript transdata={transcriptData} patient = {patientChoice} sendJSONData = {sendData} />
     </div>
   );
 }

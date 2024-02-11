@@ -1,17 +1,21 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const Transcript = ({transdata, patient}) => {
+const Transcript = ({transdata, patient, sendJSONData}) => {
     const onSubmit = async () => {
+      
+      if(transdata || patient ==='Select an option'){
         try {
+            console.log({...sendJSONData, username: patient})
             const response = await axios.post('http://104.248.110.113:5000/save', {
-              data: {...transdata, username: patient},
+              data: {...sendJSONData, username: patient},
             });
             console.log('Response:', response.data);
             return response.data;
           } catch (error) {
             console.error('Error:', error);
           }
+      }
     }
 
     return (
@@ -32,7 +36,7 @@ const Transcript = ({transdata, patient}) => {
           name="text"
           accept="text/*"
           className="w-0"
-          onSubmit={onSubmit}
+          onClick={onSubmit}
           required
         />
       </div>

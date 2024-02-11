@@ -43,7 +43,7 @@ const Sidebar = () => {
        
         <Link to="/d/Patients">
           <button  className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
-            <i className="fas fa-plus mr-3"></i> Patient List
+            <i className="fas fa-users mr-3"></i> Patient List
           </button>
         </Link>
         <Link to="/d/Search">

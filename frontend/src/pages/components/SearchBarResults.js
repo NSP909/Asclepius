@@ -60,7 +60,7 @@ const SearchPredict = () => {
       maxHeight: '300px', // adjust as needed
       overflowY: 'auto'
     }}>
-      <div className = '' style={{ 
+      <div  style={{ 
         display: 'table', 
         boxShadow: '0px 0px 8px 2px rgba(0,0,0,0.1)', 
         borderRadius: '10px', 
