@@ -28,7 +28,6 @@ from flask import current_app, g
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql+psycopg2://postgres:postgres@localhost:5432/postgres'
-app.config["SQLALCHEMY_ECHO"] = True
 db = SQLAlchemy(app)
 
 loginManager = LoginManager()
@@ -135,29 +134,23 @@ class Symptoms(db.Model):
     symptom_date = db.Column(db.Date, nullable=False)
     history_user_id = db.Column(db.Integer, nullable=False)
 
-@loginManager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
-
 @app.route("/login", methods=["POST"])
 def login():
     username = request.json.get("username")
     password = request.json.get("password")
-    print(username, password)
     user = User.query.filter_by(username=username).first()
-    print("got user")
     if user is None:
         return jsonify({"message": "Invalid username or password"}), 400
     user_pwd = UserPwd.query.filter_by(user_id=user.user_id).first()
     if user_pwd is None or user_pwd.pwd != password:
         return jsonify({"message": "Invalid username or password"}), 400
-    login_user(user)
     return jsonify({"message": "Logged in successfully", "user_id": user.user_id, "user_type": user.user_type})
 
 @app.route("/getpatients", methods=["GET"])
 def get_patients():
     patients = User.query.filter_by(user_type=1).all()
-
+    print(patients)
+    print(patients[0].user_id)
     for patient in patients:
         patient_info = UserInfo.query.filter_by(user_id=patient.user_id).first()
         patient.fullname = patient_info.fullname

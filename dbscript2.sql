@@ -1,7 +1,3 @@
--- Insert into usertable
-INSERT INTO usertable (username, user_type) VALUES ('JohnDoe', 0);
-INSERT INTO usertable (username, user_type) VALUES ('JaneDoe', 1);
-
 -- Insert into userpwd
 INSERT INTO userpwd (user_id, pwd) VALUES (1, 'password1');
 INSERT INTO userpwd (user_id, pwd) VALUES (2, 'password2');
@@ -23,8 +19,8 @@ INSERT INTO medicine (user_id, med_name, med_dosage, med_frequency, med_date, hi
 VALUES (2, 'Medicine2', '2 pills', 'Twice a day', '2022-01-02', 2);
 
 --Insert into vitals
-INSERT INTO vitals (vital_id, user_id, vital_name, vital_value, vital_date, history_user_id) VALUES (5, 'blood pressure', 180, '2023-01-02', 5);
-INSERT INTO vitals (vital_id, user_id, vital_name, vital_value, vital_date, history_user_id) VALUES (6, 'blood pressure', 180, '2023-01-02', 6);
+INSERT INTO vitals (user_id, vital_name, vital_value, vital_date, history_user_id) VALUES (5, 'blood pressure', 180, '2023-01-02', 5);
+INSERT INTO vitals (user_id, vital_name, vital_value, vital_date, history_user_id) VALUES (6, 'blood pressure', 180, '2023-01-02', 6);
 
 -- Insert into vaccine
 INSERT INTO vaccine (user_id, vac_name, vac_date, history_user_id) VALUES (1, 'Vaccine1', '2022-01-01', 1);
