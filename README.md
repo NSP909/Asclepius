@@ -12,3 +12,7 @@ MediCompile is a project that involves extracting text data from various medical
 - Doctor portal for accessing patient data
 - Summarization and display of patient data
 - Natural language to SQL query conversion for intuitive database search
+
+## Prizes
+
+- Georgia Tech Hacklytics Elevance Healthcare Challenge 1st Prize
